@@ -9,20 +9,17 @@ import java.io.InputStream;
  * 2 byte unsigned integer
  */
 public class U2 {
-	private byte[] bytes = new byte[2];
 	private int value;
-	public U2(InputStream is) throws IOException {
-		is.read(bytes, 0, 2);
-		this.value = 0;
-		toDec();
+
+	public U2(byte[] bytes) {
+		for (int i = 0; i < bytes.length; i ++) {
+			this.value <<= 8;
+			this.value |= (bytes[i] & 0xff);
+		}
 	}
 
-	private void toDec() {
-		for (int i = 0; i < bytes.length; i ++) {
-			value <<= 8;
-			value |= (bytes[i] & 0xff);
-		}
-
+	public U2(int value) {
+		this.value = value;
 	}
 
 	public int getValue() {

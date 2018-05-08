@@ -9,18 +9,17 @@ import java.io.InputStream;
  * 2 byte unsigned integer
  */
 public class U1 {
-	private byte[] b = new byte[1];
-	private int value;
+	private short value;
 
-	public U1(InputStream is) throws IOException {
-		is.read(b, 0, 1);
-		this.value = 0;
-		toDec();
+	public U1(byte b) {
+		this.value = (short) (b & 0xff);
 	}
-	private void toDec() {
-		value = b[0] & 0xff;
+
+	public U1(int value) {
+		this.value = (short) value;
 	}
-	public int getValue() {
+
+	public short getValue() {
 		return value;
 	}
 

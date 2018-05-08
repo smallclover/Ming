@@ -24,7 +24,7 @@ public class ClassFileParser {
     private static InputStream is = null;
     private static ClassFile cf = new ClassFile();
     //这里可以更改为任意的class文件
-    private static String defaultClassFilePath="E:\\tools\\pleiades\\workspace\\HelloWorld.class";
+    private static String defaultClassFilePath="C:\\Users\\smallclover\\Desktop\\Simple.class";
     /**
      * 第一步读取class文件
      * @param classFilePath
@@ -53,7 +53,9 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void magic() throws IOException {
-		U4 magic = new U4(is);
+        byte[] bytes = new byte[4];
+        is.read(bytes, 0, 4);
+		U4 magic = new U4(bytes);
 		cf.setMagic(magic);
 		System.out.println(magic.toHex());
     }
@@ -64,7 +66,9 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void minorVersion() throws IOException {
-		U2 minorVersion = new U2(is);
+        byte[] bytes = new byte[2];
+        is.read(bytes, 0 , 2);
+		U2 minorVersion = new U2(bytes);
 		cf.setMinorVersion(minorVersion);
 		System.out.println(minorVersion.getValue());
     }
@@ -75,7 +79,9 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void majorVersion() throws IOException {
-		U2 majorVersion = new U2(is);
+        byte[] bytes = new byte[2];
+        is.read(bytes, 0 , 2);
+		U2 majorVersion = new U2(bytes);
 		cf.setMajorVersion(majorVersion);
 		System.out.println(majorVersion.getValue());
     }
@@ -86,8 +92,9 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void constantPoolCount() throws IOException {
-    	U2 constantPoolCount = null;
-		constantPoolCount = new U2(is);
+        byte[] bytes = new byte[2];
+        is.read(bytes, 0 , 2);
+    	U2 constantPoolCount =  new U2(bytes);
 		cf.setConstantPoolCount(constantPoolCount);
     	System.out.println(cf.getConstantPoolCount().getValue());
     }
@@ -100,15 +107,21 @@ public class ClassFileParser {
     	int length = cf.getConstantPoolCount().getValue();
     	ConstantPool cp = new ConstantPool();
     	while (length != 0) {
-    		U1 tag = new U1(is);
+    	    byte[] byte_tag = new byte[1];
+    	    is.read(byte_tag, 0, 1);
+    		U1 tag = new U1(byte_tag[0]);
     		switch(tag.getValue()) {
     			case 1 :
-    				U2 len = new U2(is);
-    				cp.getConstantPool().add(new ConstantUtf8Info(len.getValue()));
+    			    byte[] byte_length = new byte[2];
+                    is.read(byte_length, 0, 2);
+    				U2 len = new U2(byte_length);
+                    //is.read()
+    				//cp.getConstantPool().add(new ConstantUtf8Info(len.getValue()));
     				break;
     			case 7:
-    				U2 name_index = new U2(is);
-    				cp.getConstantPool().add(new ConstantClassInfo(name_index.getValue()));
+    			    byte[] byte_name_index = new byte[2];
+    				cp.getConstantPool().add(new ConstantClassInfo(byte_name_index));
+    				break;
     		}
     		length --;
     	}
@@ -119,7 +132,9 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void accessFlags() throws IOException {
-		U2 accessFlags = new U2(is);
+        byte[] bytes = new byte[2];
+        is.read(bytes, 0 , 2);
+		U2 accessFlags = new U2(bytes);
 		System.out.println(accessFlags.toHex());
 
     }

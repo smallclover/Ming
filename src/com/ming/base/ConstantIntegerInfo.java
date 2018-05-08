@@ -7,5 +7,5 @@ package com.ming.base;
  */
 public class ConstantIntegerInfo implements ConstantInfo {
 	private int tag = 3;
-
+	//todo
 }

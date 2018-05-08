@@ -19,6 +19,12 @@ public class ConstantPool {
 
 	private List<ConstantInfo> constant_pool = new ArrayList<ConstantInfo>();
 
+	public ConstantPool() {
+
+		//常量池的第0个索引代表空，所以每次初始化给0位置赋值为null
+		constant_pool.add(null);
+	}
+
 	public List<ConstantInfo> getConstantPool() {
 		return constant_pool;
 	}

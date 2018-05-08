@@ -10,26 +10,24 @@ import java.io.InputStream;
  * 4 byte unsigned integer
  */
 public class U4 {
-	private byte[] bytes = new byte[4];
 	private long value;
 
-	public U4(InputStream is) throws IOException {
-		is.read(bytes, 0, 4);
-		this.value = 0L;
-		toDec();
-	}
-	private void toDec(){
+	public U4(byte[] bytes) {
 		for (int i = 0; i < bytes.length; i ++) {
 			value <<= 8;
 			value |= (bytes[i] & 0xff);
 		}
 	}
+
+	public U4(int value) {
+		this.value = value;
+	}
+
 	public long getValue() {
 		return value;
 	}
 
 	public String toHex() {
-		getValue();
 		return Long.toHexString(value);
 	}
 }
