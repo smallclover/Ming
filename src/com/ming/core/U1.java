@@ -15,15 +15,16 @@ public class U1 {
 	public U1(InputStream is) throws IOException {
 		is.read(b, 0, 1);
 		this.value = 0;
+		toDec();
 	}
-
-	public int getValue() {
+	private void toDec() {
 		value = b[0] & 0xff;
+	}
+	public int getValue() {
 		return value;
 	}
 
 	public String toHex() {
-		getValue();
 		return Integer.toHexString(value);
 	}
 }

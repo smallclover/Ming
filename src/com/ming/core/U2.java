@@ -14,19 +14,22 @@ public class U2 {
 	public U2(InputStream is) throws IOException {
 		is.read(bytes, 0, 2);
 		this.value = 0;
+		toDec();
 	}
 
-	public int getValue() {
+	private void toDec() {
 		for (int i = 0; i < bytes.length; i ++) {
 			value <<= 8;
 			value |= (bytes[i] & 0xff);
 		}
 
+	}
+
+	public int getValue() {
 		return value;
 	}
 
 	public String toHex() {
-		getValue();
 		return Integer.toHexString(value);
 	}
 

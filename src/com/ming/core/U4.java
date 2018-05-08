@@ -16,14 +16,15 @@ public class U4 {
 	public U4(InputStream is) throws IOException {
 		is.read(bytes, 0, 4);
 		this.value = 0L;
+		toDec();
 	}
-
-	public long getValue() {
+	private void toDec(){
 		for (int i = 0; i < bytes.length; i ++) {
 			value <<= 8;
 			value |= (bytes[i] & 0xff);
 		}
-
+	}
+	public long getValue() {
 		return value;
 	}
 
