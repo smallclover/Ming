@@ -1,8 +1,14 @@
 package com.ming.test;
 
-import javafx.fxml.FXML;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import com.ming.core.U2;
+import com.ming.core.U4;
 
 /**
  * @author smallclover
@@ -12,7 +18,7 @@ import java.io.*;
 public class ClassFileParser {
     private static InputStream is = null;
     //这里可以更改为任意的class文件
-    private static String defaultClassFilePath="C:\\Users\\smallclover\\Desktop\\Simple.class";
+    private static String defaultClassFilePath="E:\\tools\\pleiades\\workspace\\HelloWorld.class";
     /**
      * 第一步读取class文件
      * @param classFilePath
@@ -40,15 +46,13 @@ public class ClassFileParser {
      * 0xff = 11111111
      */
     public static void magic() {
-        byte[] magic = new byte[4];
-        try {
-            is.read(magic, 0, 4);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-/*        for (byte b : magic) {
-            System.out.println(Integer.toHexString(b & 0xff));
-        }*/
+    	try {
+			U4 magic = new U4(is);
+			System.out.println(magic.toHex());
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -56,21 +60,13 @@ public class ClassFileParser {
      * minorVersion 占用两个字节的无符号整数
      */
     public static void minorVersion() {
-        byte[] minorVersion = new byte[2];
-        int sum = 0;
-        try {
-            is.read(minorVersion, 0, 2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //进行字节拼接转换为int类型
-        //先将高位的八个bit向左移动8位，留出低八位填充剩下的8bit
-        sum = ((minorVersion[0] & 0xff) << 8 | (minorVersion[1] & 0xff));
-/*        for (byte b : minorVersion) {
-            System.out.println(Integer.toHexString(b & 0xff));
-        }*/
-        System.out.println(sum);
+    	try {
+			U2 minorVersion = new U2(is);
+			System.out.println(minorVersion.getValue());
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -78,19 +74,13 @@ public class ClassFileParser {
      * minorVersion 占用两个字节的无符号整数
      */
     public static void majorVersion() {
-        byte[] majorVersion = new byte[2];
-        int sum = 0;
-
-        try {
-            is.read(majorVersion, 0, 2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-/*        for (byte b : majorVersion) {
-            System.out.println(Integer.toHexString(b & 0xff));
-        }*/
-        sum = ((majorVersion[0] & 0xff) << 8 | (majorVersion[1] & 0xff));
-        System.out.println(sum);
+    	try {
+			U2 majorVersion = new U2(is);
+			System.out.println(majorVersion.getValue());
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
     }
 
     public static void main(String[] args) {
