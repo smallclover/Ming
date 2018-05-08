@@ -3,6 +3,12 @@ package com.ming.core;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ *
+ * @author smallclover
+ *
+ * 4 byte unsigned integer
+ */
 public class U4 {
 	private byte[] bytes = new byte[4];
 	private long value;

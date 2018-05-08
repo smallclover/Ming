@@ -3,6 +3,11 @@ package com.ming.core;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ *
+ * @author smallclover
+ * 2 byte unsigned integer
+ */
 public class U1 {
 	private byte[] b = new byte[1];
 	private int value;
