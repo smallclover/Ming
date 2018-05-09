@@ -3,17 +3,13 @@ package com.ming.test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.ming.base.ConstantClassInfo;
-import com.ming.base.ConstantUtf8Info;
 import com.ming.core.ClassFile;
-import com.ming.core.ConstantPool;
-import com.ming.core.U1;
 import com.ming.core.U2;
 import com.ming.core.U4;
+import com.ming.io.ClassFileReader;
 
 /**
  * @author smallclover
@@ -23,24 +19,24 @@ import com.ming.core.U4;
 public class ClassFileParser {
     private static InputStream is = null;
     private static ClassFile cf = new ClassFile();
+    private static ClassFileReader cfr = null;
     //这里可以更改为任意的class文件
-    private static String defaultClassFilePath="C:\\Users\\smallclover\\Desktop\\Simple.class";
+    private static String defaultClassFilePath="C:\\Users\\Nesjuser01\\Desktop\\HelloWorld.class";
     /**
      * 第一步读取class文件
      * @param classFilePath
      * @return
      */
-    public static InputStream readClassFile(String classFilePath) {
+    public static void readClassFile(String classFilePath) {
         File file = new File(classFilePath);
 
         try {
             is = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            System.out.println("file not found");
+            cfr = new ClassFileReader(is.readAllBytes());
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return is;
     }
 
     /**
@@ -53,9 +49,7 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void magic() throws IOException {
-        byte[] bytes = new byte[4];
-        is.read(bytes, 0, 4);
-		U4 magic = new U4(bytes);
+    	U4 magic = cfr.readU4();
 		cf.setMagic(magic);
 		System.out.println(magic.toHex());
     }
@@ -66,9 +60,7 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void minorVersion() throws IOException {
-        byte[] bytes = new byte[2];
-        is.read(bytes, 0 , 2);
-		U2 minorVersion = new U2(bytes);
+		U2 minorVersion = cfr.readU2();
 		cf.setMinorVersion(minorVersion);
 		System.out.println(minorVersion.getValue());
     }
@@ -79,9 +71,7 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void majorVersion() throws IOException {
-        byte[] bytes = new byte[2];
-        is.read(bytes, 0 , 2);
-		U2 majorVersion = new U2(bytes);
+		U2 majorVersion = cfr.readU2();
 		cf.setMajorVersion(majorVersion);
 		System.out.println(majorVersion.getValue());
     }
@@ -92,11 +82,9 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void constantPoolCount() throws IOException {
-        byte[] bytes = new byte[2];
-        is.read(bytes, 0 , 2);
-    	U2 constantPoolCount =  new U2(bytes);
+    	U2 constantPoolCount = cfr.readU2();
 		cf.setConstantPoolCount(constantPoolCount);
-    	System.out.println(cf.getConstantPoolCount().getValue());
+    	System.out.println(constantPoolCount.getValue());
     }
 
     /**
@@ -104,27 +92,7 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void constantInfo() throws IOException {
-    	int length = cf.getConstantPoolCount().getValue();
-    	ConstantPool cp = new ConstantPool();
-    	while (length != 0) {
-    	    byte[] byte_tag = new byte[1];
-    	    is.read(byte_tag, 0, 1);
-    		U1 tag = new U1(byte_tag[0]);
-    		switch(tag.getValue()) {
-    			case 1 :
-    			    byte[] byte_length = new byte[2];
-                    is.read(byte_length, 0, 2);
-    				U2 len = new U2(byte_length);
-                    //is.read()
-    				//cp.getConstantPool().add(new ConstantUtf8Info(len.getValue()));
-    				break;
-    			case 7:
-    			    byte[] byte_name_index = new byte[2];
-    				cp.getConstantPool().add(new ConstantClassInfo(byte_name_index));
-    				break;
-    		}
-    		length --;
-    	}
+
     }
 
     /**
@@ -132,10 +100,6 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void accessFlags() throws IOException {
-        byte[] bytes = new byte[2];
-        is.read(bytes, 0 , 2);
-		U2 accessFlags = new U2(bytes);
-		System.out.println(accessFlags.toHex());
 
     }
 
@@ -146,7 +110,7 @@ public class ClassFileParser {
             ClassFileParser.minorVersion();
             ClassFileParser.majorVersion();
             ClassFileParser.constantPoolCount();
-            ClassFileParser.constantInfo();
+            //ClassFileParser.constantInfo();
             //ClassFileParser.accessFlags();
         } catch(IOException e) {
         	e.printStackTrace();
