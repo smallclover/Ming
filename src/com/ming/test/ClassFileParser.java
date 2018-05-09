@@ -6,7 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.ming.base.ConstantClassInfo;
 import com.ming.core.ClassFile;
+import com.ming.core.ConstantPool;
+import com.ming.core.U1;
 import com.ming.core.U2;
 import com.ming.core.U4;
 import com.ming.io.ClassFileReader;
