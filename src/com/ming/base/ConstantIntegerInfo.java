@@ -5,7 +5,7 @@ package com.ming.base;
  * @author smallclover
  * constant_integer_info
  */
-public class ConstantIntegerInfo implements ConstantInfo {
+public class ConstantIntegerInfo extends ConstantInfo {
 	private int tag = 3;
 	//todo
 }

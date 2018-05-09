@@ -1,5 +1,45 @@
 package com.ming.base;
 
-public interface ConstantInfo {
+public abstract class ConstantInfo {
 
+	private static final int NULL = 0;
+	private static final int CONSTANT_Utf8_info = 1;
+	private static final int CONSTANT_Integer_info = 3;
+	private static final int CONSTANT_Float_info = 4;
+	private static final int CONSTANT_Long_info = 5;
+	private static final int CONSTANT_Double_info = 6;
+	private static final int CONSTANT_Class_info = 7;
+	private static final int CONSTANT_String_info = 8;
+	private static final int CONSTANT_Fieldref_info = 9;
+	private static final int CONSTANT_Methodref_info = 10;
+
+
+	public ConstantInfo() {
+
+	}
+
+	public static ConstantInfo getSpecificConstantInfo(int tag) {
+		switch (tag) {
+			case CONSTANT_Utf8_info:
+				return new ConstantUtf8Info();
+			case CONSTANT_Integer_info:
+				return new ConstantIntegerInfo();
+			case CONSTANT_Float_info:
+				return new ConstantFloatInfo();
+			case CONSTANT_Long_info:
+				return new ConstantLongInfo();
+			case CONSTANT_Double_info:
+				return new ConstantDoubleInfo();
+			case CONSTANT_Class_info:
+				return new ConstantClassInfo();
+			case CONSTANT_String_info:
+				return new ConstantStringInfo();
+			case CONSTANT_Fieldref_info:
+				return new ConstantFieldrefInfo();
+			case CONSTANT_Methodref_info:
+				return new ConstantMethodrefInfo();
+			default:
+				throw new RuntimeException("can't find specific type");
+		}
+	}
 }
