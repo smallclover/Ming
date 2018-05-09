@@ -56,6 +56,7 @@ public class ClassFileReader {
 		return u4;
 	}
 
+
 	private void checkIndex() {
 		if(currentIndex >= classfile.length) {
 			throw new ArrayIndexOutOfBoundsException();

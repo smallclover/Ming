@@ -1,6 +1,8 @@
 package com.ming.base;
 
-public abstract class ConstantInfo {
+import com.ming.io.ClassFileReader;
+
+public class ConstantInfo {
 
 	private static final int NULL = 0;
 	private static final int CONSTANT_Utf8_info = 1;
@@ -18,10 +20,10 @@ public abstract class ConstantInfo {
 
 	}
 
-	public static ConstantInfo getSpecificConstantInfo(int tag) {
+	public static ConstantInfo getSpecificConstantInfo(int tag, ClassFileReader cfr) {
 		switch (tag) {
 			case CONSTANT_Utf8_info:
-				return new ConstantUtf8Info();
+				return new ConstantUtf8Info(cfr);
 			case CONSTANT_Integer_info:
 				return new ConstantIntegerInfo();
 			case CONSTANT_Float_info:
@@ -31,7 +33,7 @@ public abstract class ConstantInfo {
 			case CONSTANT_Double_info:
 				return new ConstantDoubleInfo();
 			case CONSTANT_Class_info:
-				return new ConstantClassInfo();
+				return new ConstantClassInfo(cfr);
 			case CONSTANT_String_info:
 				return new ConstantStringInfo();
 			case CONSTANT_Fieldref_info:

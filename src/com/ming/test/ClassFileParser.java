@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.ming.base.ConstantClassInfo;
+import com.ming.base.ConstantInfo;
 import com.ming.core.ClassFile;
 import com.ming.core.ConstantPool;
 import com.ming.core.U1;
@@ -23,6 +23,7 @@ public class ClassFileParser {
     private static InputStream is = null;
     private static ClassFile cf = new ClassFile();
     private static ClassFileReader cfr = null;
+    private static ConstantPool cp = null;
     //这里可以更改为任意的class文件
     private static String defaultClassFilePath="C:\\Users\\Nesjuser01\\Desktop\\HelloWorld.class";
     /**
@@ -36,6 +37,7 @@ public class ClassFileParser {
         try {
             is = new FileInputStream(file);
             cfr = new ClassFileReader(is.readAllBytes());
+            cp = new ConstantPool();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,7 +97,16 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void constantInfo() throws IOException {
-
+    	int length = cf.getConstantPoolCount().getValue();
+    	ConstantInfo[] cpInfo = new ConstantInfo[length];
+    	for( int i = 1; i < length;i ++) {
+    		U1 tag = cfr.readU1();
+    		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
+    	}
+    	cp.setConstantInfo(cpInfo);
+    	for(ConstantInfo content: cp.getConstantInfo()) {
+    		System.out.println(content.getClass().getSimpleName());
+    	}
     }
 
     /**
@@ -113,7 +124,7 @@ public class ClassFileParser {
             ClassFileParser.minorVersion();
             ClassFileParser.majorVersion();
             ClassFileParser.constantPoolCount();
-            //ClassFileParser.constantInfo();
+            ClassFileParser.constantInfo();
             //ClassFileParser.accessFlags();
         } catch(IOException e) {
         	e.printStackTrace();

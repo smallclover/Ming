@@ -1,5 +1,9 @@
 package com.ming.base;
 
+import com.ming.core.U1;
+import com.ming.core.U2;
+import com.ming.io.ClassFileReader;
+
 /**
  *
  * @author smallclover
@@ -8,5 +12,14 @@ package com.ming.base;
  * tag = 7
  */
 public class ConstantClassInfo extends ConstantInfo {
+	private static final U1 tag = new U1(7);
+	private U2 name_index = null;
 
+	public ConstantClassInfo(ClassFileReader cfr) {
+		name_index = cfr.readU2();
+	}
+
+	public U2 getNameIndex() {
+		return name_index;
+	}
 }

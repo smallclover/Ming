@@ -1,11 +1,6 @@
 package com.ming.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ming.base.ConstantClassInfo;
 import com.ming.base.ConstantInfo;
-import com.ming.base.ConstantUtf8Info;
 
 /**
  *
@@ -14,5 +9,15 @@ import com.ming.base.ConstantUtf8Info;
  * constant pool
  */
 public class ConstantPool {
+	private ConstantInfo[] constantInfo;
+
+	public ConstantInfo[] getConstantInfo() {
+		return constantInfo;
+	}
+
+	public void setConstantInfo(ConstantInfo[] constantInfo) {
+		this.constantInfo = constantInfo;
+	}
+
 
 }
