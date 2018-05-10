@@ -14,6 +14,7 @@ public class ConstantInfo {
 	private static final int CONSTANT_String_info = 8;
 	private static final int CONSTANT_Fieldref_info = 9;
 	private static final int CONSTANT_Methodref_info = 10;
+	private static final int CONSTANT_NameAndType_info = 12;
 
 
 	public ConstantInfo() {
@@ -39,7 +40,9 @@ public class ConstantInfo {
 			case CONSTANT_Fieldref_info:
 				return new ConstantFieldrefInfo();
 			case CONSTANT_Methodref_info:
-				return new ConstantMethodrefInfo();
+				return new ConstantMethodrefInfo(cfr);
+			case CONSTANT_NameAndType_info:
+				return new ConstantNameAndTypeInfo(cfr);
 			default:
 				throw new RuntimeException("can't find specific type");
 		}

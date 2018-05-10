@@ -5,9 +5,10 @@ import com.ming.core.U2;
 import com.ming.io.ClassFileReader;
 
 /**
- * constant_utf8_info
  * @author smallclover
- *
+ * constant_utf8_info
+ * 用于表示字符串常量的值
+ * tag = 1
  */
 public class ConstantUtf8Info extends ConstantInfo {
 	private static final U1 tag = new U1(1);

@@ -25,7 +25,7 @@ public class ClassFileParser {
     private static ClassFileReader cfr = null;
     private static ConstantPool cp = null;
     //这里可以更改为任意的class文件
-    private static String defaultClassFilePath="C:\\Users\\Nesjuser01\\Desktop\\HelloWorld.class";
+    private static String defaultClassFilePath="C:\\Users\\smallclover\\Desktop\\Simple.class";
     /**
      * 第一步读取class文件
      * @param classFilePath
@@ -100,11 +100,15 @@ public class ClassFileParser {
     	int length = cf.getConstantPoolCount().getValue();
     	ConstantInfo[] cpInfo = new ConstantInfo[length];
     	for( int i = 1; i < length;i ++) {
+    	    //todo 对于double，long可能会有问题
     		U1 tag = cfr.readU1();
     		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
     	}
     	cp.setConstantInfo(cpInfo);
     	for(ConstantInfo content: cp.getConstantInfo()) {
+            if (content == null) {
+                continue;
+            }
     		System.out.println(content.getClass().getSimpleName());
     	}
     }
@@ -114,7 +118,21 @@ public class ClassFileParser {
      * @throws IOException
      */
     public static void accessFlags() throws IOException {
+        U2 accessFlags = cfr.readU2();
+        cf.setAccessFlags(accessFlags);
+        System.out.println(accessFlags.getValue());
+    }
 
+    public static void thisClass() {
+        U2 thisClass = cfr.readU2();
+        cf.setThisClass(thisClass);
+        System.out.println(thisClass.getValue());
+    }
+
+    public static void superClass() {
+        U2 superClass = cfr.readU2();
+        cf.setSuperClass(superClass);
+        System.out.println(superClass.getValue());
     }
 
     public static void main(String[] args) {
@@ -125,7 +143,9 @@ public class ClassFileParser {
             ClassFileParser.majorVersion();
             ClassFileParser.constantPoolCount();
             ClassFileParser.constantInfo();
-            //ClassFileParser.accessFlags();
+            ClassFileParser.accessFlags();
+            ClassFileParser.thisClass();
+            ClassFileParser.superClass();
         } catch(IOException e) {
         	e.printStackTrace();
         }
