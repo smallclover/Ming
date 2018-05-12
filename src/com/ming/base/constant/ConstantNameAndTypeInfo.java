@@ -1,4 +1,4 @@
-package com.ming.base;
+package com.ming.base.constant;
 
 import com.ming.core.U1;
 import com.ming.core.U2;

@@ -1,6 +1,6 @@
 package com.ming.core;
 
-import com.ming.base.ConstantInfo;
+import com.ming.base.constant.ConstantInfo;
 
 /**
  *

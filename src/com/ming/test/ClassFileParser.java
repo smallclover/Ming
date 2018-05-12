@@ -6,7 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.ming.base.ConstantInfo;
+import com.ming.base.constant.ConstantInfo;
+import com.ming.base.FieldInfo;
 import com.ming.core.ClassFile;
 import com.ming.core.ConstantPool;
 import com.ming.core.U1;
@@ -135,6 +136,45 @@ public class ClassFileParser {
         System.out.println(superClass.getValue());
     }
 
+    public static void interfacesCount(){
+        U2 interfacesCount = cfr.readU2();
+        cf.setInterfacesCount(interfacesCount);
+        System.out.println(interfacesCount.getValue());
+    }
+
+    public static void interfaces() {
+        //todo
+        int length = cf.getInterfacesCount().getValue();
+        if (length == 0) {
+            //System.out.println(0);
+        }
+        U2[] interfaces = new U2[length];
+        for (int i = 0; i < length;i ++) {
+            interfaces[i] = cfr.readU2();
+        }
+        for (U2 u2 : interfaces) {
+            System.out.println(u2.getValue());
+        }
+    }
+
+    public static void fieldCount() {
+        U2 fieldCount = cfr.readU2();
+        cf.setInterfacesCount(fieldCount);
+        System.out.println("field_count: " + fieldCount.getValue());
+    }
+
+    public static void fields() {
+        int length = cf.getFieldsCount().getValue();
+        FieldInfo[] fi = new FieldInfo[length];
+        for (int i = 0; i < length; i++) {
+            fi[i].setAccessFlags(cfr.readU2());
+            fi[i].setNameIndex(cfr.readU2());
+            fi[i].setDescriptorIndex(cfr.readU2());
+            fi[i].setAttributesCount(cfr.readU2());
+
+        }
+    }
+
     public static void main(String[] args) {
         ClassFileParser.readClassFile(defaultClassFilePath);
         try {
@@ -146,6 +186,9 @@ public class ClassFileParser {
             ClassFileParser.accessFlags();
             ClassFileParser.thisClass();
             ClassFileParser.superClass();
+            ClassFileParser.interfacesCount();
+            ClassFileParser.interfaces();
+            ClassFileParser.fieldCount();
         } catch(IOException e) {
         	e.printStackTrace();
         }
