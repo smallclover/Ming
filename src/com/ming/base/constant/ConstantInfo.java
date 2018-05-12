@@ -47,4 +47,5 @@ public class ConstantInfo {
 				throw new RuntimeException("can't find specific type");
 		}
 	}
+
 }

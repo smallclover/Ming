@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.ming.base.attribute.AttributeInfo;
 import com.ming.base.constant.ConstantInfo;
 import com.ming.base.FieldInfo;
+import com.ming.base.constant.ConstantUtf8Info;
 import com.ming.core.ClassFile;
 import com.ming.core.ConstantPool;
 import com.ming.core.U1;
@@ -159,19 +161,30 @@ public class ClassFileParser {
 
     public static void fieldCount() {
         U2 fieldCount = cfr.readU2();
-        cf.setInterfacesCount(fieldCount);
+        cf.setFieldsCount(fieldCount);
         System.out.println("field_count: " + fieldCount.getValue());
     }
 
     public static void fields() {
         int length = cf.getFieldsCount().getValue();
-        FieldInfo[] fi = new FieldInfo[length];
-        for (int i = 0; i < length; i++) {
-            fi[i].setAccessFlags(cfr.readU2());
-            fi[i].setNameIndex(cfr.readU2());
-            fi[i].setDescriptorIndex(cfr.readU2());
-            fi[i].setAttributesCount(cfr.readU2());
 
+        FieldInfo[] fis = new FieldInfo[length];
+        for (int i = 0; i < fis.length; i ++) {
+            fis[i] = new FieldInfo();
+        }
+        for (int i = 0; i < length; i++) {
+            fis[i].setAccessFlags(cfr.readU2());
+            fis[i].setNameIndex(cfr.readU2());
+            fis[i].setDescriptorIndex(cfr.readU2());
+            U2 att_length = cfr.readU2();
+            fis[i].setAttributesCount(att_length);
+            AttributeInfo[] attributes = new AttributeInfo[att_length.getValue()];
+            for (int j = 0; j < attributes.length; j++) {
+                U2 attribute_name_index = cfr.readU2();
+                ConstantInfo[] ci = cp.getConstantInfo();
+                System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
+                //attributes[j] = AttributeInfo.getSpecificAttributeInfo(ci[attribute_name_index.getValue()], cfr);
+            }
         }
     }
 
@@ -189,6 +202,7 @@ public class ClassFileParser {
             ClassFileParser.interfacesCount();
             ClassFileParser.interfaces();
             ClassFileParser.fieldCount();
+            ClassFileParser.fields();
         } catch(IOException e) {
         	e.printStackTrace();
         }

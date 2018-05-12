@@ -25,9 +25,32 @@ public class ConstantUtf8Info extends ConstantInfo {
 
 	public String getValue() {
 		StringBuffer sb = new StringBuffer();
-		for(int i = 0; i < u1.length; i ++) {
-			sb.append(u1[0]);
+		for (U1 content : u1) {
+			sb.append(content.toHex());
 		}
+		return sb.toString();
+	}
+
+
+	public String convertHexToString(){
+		String hex = getValue();
+
+		StringBuilder sb = new StringBuilder();
+		StringBuilder temp = new StringBuilder();
+
+		//49204c6f7665204a617661 split into two characters 49, 20, 4c...
+		for( int i = 0; i < hex.length() - 1; i += 2 ){
+
+			//grab the hex in pairs
+			String output = hex.substring(i, (i + 2));
+			//convert hex to decimal
+			int decimal = Integer.parseInt(output, 16);
+			//convert the decimal to character
+			sb.append((char)decimal);
+
+			temp.append(decimal);
+		}
+
 		return sb.toString();
 	}
 }
