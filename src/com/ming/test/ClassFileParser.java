@@ -6,9 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.ming.base.FieldInfo;
 import com.ming.base.attribute.AttributeInfo;
 import com.ming.base.constant.ConstantInfo;
-import com.ming.base.FieldInfo;
 import com.ming.base.constant.ConstantUtf8Info;
 import com.ming.core.ClassFile;
 import com.ming.core.ConstantPool;
@@ -28,7 +28,7 @@ public class ClassFileParser {
     private static ClassFileReader cfr = null;
     private static ConstantPool cp = null;
     //这里可以更改为任意的class文件
-    private static String defaultClassFilePath="C:\\Users\\smallclover\\Desktop\\Simple.class";
+    private static String defaultClassFilePath="C:\\Users\\Nesjuser01\\Desktop\\HelloWorld.class";
     /**
      * 第一步读取class文件
      * @param classFilePath
@@ -182,8 +182,9 @@ public class ClassFileParser {
             for (int j = 0; j < attributes.length; j++) {
                 U2 attribute_name_index = cfr.readU2();
                 ConstantInfo[] ci = cp.getConstantInfo();
-                System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
-                //attributes[j] = AttributeInfo.getSpecificAttributeInfo(ci[attribute_name_index.getValue()], cfr);
+                //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
+                attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr);
+                System.out.println(attributes[j]);;
             }
         }
     }

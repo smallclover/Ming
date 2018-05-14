@@ -1,8 +1,9 @@
 package com.ming.base.attribute;
 
+import com.ming.core.U2;
 import com.ming.io.ClassFileReader;
 
-public class AttributeInfo {
+public abstract class AttributeInfo {
     // 被声明为 deprecated 的方法和字段
     private static final String ATTRIBUTE_Deprecated_info = "Deprecated";
     // Java 代码编译成的字节码指令
@@ -23,18 +24,20 @@ public class AttributeInfo {
     public AttributeInfo() {
     }
 
-    public static AttributeInfo getSpecificAttributeInfo(String name, ClassFileReader cfr) {
+    public static AttributeInfo getSpecificAttributeInfo(U2 name_index, String name, ClassFileReader cfr) {
         switch (name) {
             case ATTRIBUTE_Code_info :
                 return new AttributeCodeInfo();
             case ATTRIBUTE_SourceFile_info:
                 return new AttributeSourceFileInfo();
             case ATTRIBUTE_ConstantValue_info:
-                return new AttributeConstantValueInfo();
+                return new AttributeConstantValueInfo(name_index, cfr);
             case ATTRIBUTE_LineNumberTable_info:
                 return new AttributeLineNumberTableInfo();
             default:
                 throw new RuntimeException("cant find specific attribute");
         }
     }
+
+    //public abstract void read(ClassFileReader cfr);
 }

@@ -38,7 +38,7 @@ public class ConstantInfo {
 			case CONSTANT_String_info:
 				return new ConstantStringInfo(cfr);
 			case CONSTANT_Fieldref_info:
-				return new ConstantFieldrefInfo();
+				return new ConstantFieldrefInfo(cfr);
 			case CONSTANT_Methodref_info:
 				return new ConstantMethodrefInfo(cfr);
 			case CONSTANT_NameAndType_info:
