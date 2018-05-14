@@ -1,5 +1,6 @@
 package com.ming.base.constant;
 
+import com.ming.base.ConstantInfo;
 import com.ming.core.U1;
 import com.ming.core.U2;
 import com.ming.io.ClassFileReader;
@@ -13,4 +14,11 @@ public class ConstantFieldrefInfo extends ConstantInfo {
         class_index = cfr.readU2();
         name_and_type_index = cfr.readU2();
     }
+
+	@Override
+	public String toString() {
+		return "[tag: " + tag.getValue() + "]\n"
+				+ "[class_index: " + class_index.getValue() + "]\n"
+				+ "[name_and_type_index: " + name_and_type_index.getValue() + "]\n";
+	}
 }

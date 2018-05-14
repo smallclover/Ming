@@ -6,9 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.ming.base.AttributeInfo;
+import com.ming.base.ConstantInfo;
 import com.ming.base.FieldInfo;
-import com.ming.base.attribute.AttributeInfo;
-import com.ming.base.constant.ConstantInfo;
+import com.ming.base.MethodInfo;
 import com.ming.base.constant.ConstantUtf8Info;
 import com.ming.core.ClassFile;
 import com.ming.core.ConstantPool;
@@ -59,7 +60,7 @@ public class ClassFileParser {
     public static void magic() throws IOException {
     	U4 magic = cfr.readU4();
 		cf.setMagic(magic);
-		System.out.println(magic.toHex());
+		System.out.println("[magic: " + magic.toHex() + "]");
     }
 
     /**
@@ -70,7 +71,7 @@ public class ClassFileParser {
     public static void minorVersion() throws IOException {
 		U2 minorVersion = cfr.readU2();
 		cf.setMinorVersion(minorVersion);
-		System.out.println(minorVersion.getValue());
+		System.out.println("[minor_version: " + minorVersion.getValue() + "]");
     }
 
     /**
@@ -81,7 +82,7 @@ public class ClassFileParser {
     public static void majorVersion() throws IOException {
 		U2 majorVersion = cfr.readU2();
 		cf.setMajorVersion(majorVersion);
-		System.out.println(majorVersion.getValue());
+		System.out.println("[major_version: "+majorVersion.getValue() + "]");
     }
 
     /**
@@ -92,7 +93,7 @@ public class ClassFileParser {
     public static void constantPoolCount() throws IOException {
     	U2 constantPoolCount = cfr.readU2();
 		cf.setConstantPoolCount(constantPoolCount);
-    	System.out.println(constantPoolCount.getValue());
+    	System.out.println("[constant_pool_count: "+ constantPoolCount.getValue() + "]");
     }
 
     /**
@@ -113,6 +114,7 @@ public class ClassFileParser {
                 continue;
             }
     		System.out.println(content.getClass().getSimpleName());
+    		System.out.println(content);
     	}
     }
 
@@ -123,25 +125,25 @@ public class ClassFileParser {
     public static void accessFlags() throws IOException {
         U2 accessFlags = cfr.readU2();
         cf.setAccessFlags(accessFlags);
-        System.out.println(accessFlags.getValue());
+        System.out.println("[access_flags: " + accessFlags.getValue() + "]\n");
     }
 
     public static void thisClass() {
         U2 thisClass = cfr.readU2();
         cf.setThisClass(thisClass);
-        System.out.println(thisClass.getValue());
+        System.out.println("[this_class: " + thisClass.getValue() + "]\n");
     }
 
     public static void superClass() {
         U2 superClass = cfr.readU2();
         cf.setSuperClass(superClass);
-        System.out.println(superClass.getValue());
+        System.out.println("[super_class:" + superClass.getValue() + "]\n");
     }
 
     public static void interfacesCount(){
         U2 interfacesCount = cfr.readU2();
         cf.setInterfacesCount(interfacesCount);
-        System.out.println(interfacesCount.getValue());
+        System.out.println("[interfaces_count:" + interfacesCount.getValue() + "]\n");
     }
 
     public static void interfaces() {
@@ -162,7 +164,7 @@ public class ClassFileParser {
     public static void fieldCount() {
         U2 fieldCount = cfr.readU2();
         cf.setFieldsCount(fieldCount);
-        System.out.println("field_count: " + fieldCount.getValue());
+        System.out.println("[field_count: " + fieldCount.getValue() + "]\n");
     }
 
     public static void fields() {
@@ -184,7 +186,39 @@ public class ClassFileParser {
                 ConstantInfo[] ci = cp.getConstantInfo();
                 //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
                 attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr);
+                System.out.println(attributes[j].getClass().getSimpleName());
                 System.out.println(attributes[j]);;
+            }
+        }
+    }
+
+    public static void methodCount() {
+    	U2 methodCount = cfr.readU2();
+    	cf.setMethodsCount(methodCount);
+    	System.out.println("[method_count: " + methodCount.getValue() + "]\n");
+    }
+
+    public static void methods() {
+    	int length = cf.getMethodsCount().getValue();
+
+        MethodInfo[] mis = new MethodInfo[length];
+        for (int i = 0; i < mis.length; i ++) {
+            mis[i] = new MethodInfo();
+        }
+        for (int i = 0; i < length; i++) {
+            mis[i].setAccessFlags(cfr.readU2());
+            mis[i].setNameIndex(cfr.readU2());
+            mis[i].setDescriptorIndex(cfr.readU2());
+            U2 att_length = cfr.readU2();
+            mis[i].setAttributesCount(att_length);
+            AttributeInfo[] attributes = new AttributeInfo[att_length.getValue()];
+            for (int j = 0; j < attributes.length; j++) {
+                U2 attribute_name_index = cfr.readU2();
+                ConstantInfo[] ci = cp.getConstantInfo();
+                //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
+                attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr);
+                System.out.println(attributes[j].getClass().getSimpleName());
+                System.out.println(attributes[j]);
             }
         }
     }
@@ -204,6 +238,8 @@ public class ClassFileParser {
             ClassFileParser.interfaces();
             ClassFileParser.fieldCount();
             ClassFileParser.fields();
+            ClassFileParser.methodCount();
+            ClassFileParser.methods();
         } catch(IOException e) {
         	e.printStackTrace();
         }

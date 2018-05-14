@@ -1,6 +1,5 @@
 package com.ming.base;
 
-import com.ming.base.attribute.AttributeInfo;
 import com.ming.core.U2;
 
 public class FieldInfo {

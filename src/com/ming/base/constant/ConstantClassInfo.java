@@ -1,5 +1,6 @@
 package com.ming.base.constant;
 
+import com.ming.base.ConstantInfo;
 import com.ming.core.U1;
 import com.ming.core.U2;
 import com.ming.io.ClassFileReader;
@@ -21,5 +22,11 @@ public class ConstantClassInfo extends ConstantInfo {
 
 	public U2 getNameIndex() {
 		return name_index;
+	}
+
+	@Override
+	public String toString() {
+		return "[tag: " + tag.getValue() + "]\n"
+				+ "[name_index: " + name_index.getValue() + "]\n";
 	}
 }

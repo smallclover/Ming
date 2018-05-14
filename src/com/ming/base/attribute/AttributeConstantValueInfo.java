@@ -1,5 +1,6 @@
 package com.ming.base.attribute;
 
+import com.ming.base.AttributeInfo;
 import com.ming.core.U2;
 import com.ming.core.U4;
 import com.ming.io.ClassFileReader;
@@ -51,8 +52,8 @@ public class AttributeConstantValueInfo extends AttributeInfo{
 
 	@Override
 	public String toString() {
-		return "[ attribute_name_index: " + attribute_name_index.getValue() + "]\n"
-			  + "[ attribute_length: " + attribute_length.getValue() + "]\n"
-			  + "[ constantvalue_index: " + constantvalue_index.getValue() + "]\n";
+		return "[attribute_name_index: " + attribute_name_index.getValue() + "]\n"
+			  + "[attribute_length: " + attribute_length.getValue() + "]\n"
+			  + "[constantvalue_index: " + constantvalue_index.getValue() + "]\n";
 	}
 }

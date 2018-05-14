@@ -1,5 +1,6 @@
 package com.ming.base.constant;
 
+import com.ming.base.ConstantInfo;
 import com.ming.core.U1;
 import com.ming.core.U2;
 import com.ming.io.ClassFileReader;
@@ -52,5 +53,12 @@ public class ConstantUtf8Info extends ConstantInfo {
 		}
 
 		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		return "[tag: " + tag.getValue() + "]\n"
+				+ "[length: " + length.getValue() + "]\n"
+				+ "[bytes:  " + convertHexToString() + "]\n";
 	}
 }
