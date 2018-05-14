@@ -29,7 +29,7 @@ public class ClassFileParser {
     private static ClassFileReader cfr = null;
     private static ConstantPool cp = null;
     //这里可以更改为任意的class文件
-    private static String defaultClassFilePath="C:\\Users\\Nesjuser01\\Desktop\\HelloWorld.class";
+    private static String defaultClassFilePath="C:\\Users\\smallclover\\Desktop\\Simple.class";
     /**
      * 第一步读取class文件
      * @param classFilePath
