@@ -219,6 +219,7 @@ public class ClassFileParser {
                 attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr);
                 System.out.println(attributes[j].getClass().getSimpleName());
                 System.out.println(attributes[j]);
+                //todo 读取code数据
             }
         }
     }
