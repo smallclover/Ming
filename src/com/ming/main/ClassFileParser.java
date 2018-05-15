@@ -212,6 +212,8 @@ public class ClassFileParser {
             mis[i] = new MethodInfo();
         }
         for (int i = 0; i < length; i++) {
+            //去掉warning
+            System.out.println("---------");
             mis[i].setAccessFlags(cfr.readU2());
             mis[i].setNameIndex(cfr.readU2());
             mis[i].setDescriptorIndex(cfr.readU2());
