@@ -27,9 +27,7 @@ public class HelloWorld {
 
 ### 运行
 
-找到 ```java  com.ming.main.ClassFileParser.java``` 文件，
-修改```java defaultClassFilePath```字段为```java HelloWorld.class ```文件的路径
-然后运行即可在控制台打印出class文件的解析结果。
+参考文件```java com.ming.test.Test.java```
 
 
 ## 进展
@@ -84,6 +82,7 @@ attributes[attributes_count] | × | 20%
         + AttributeInfo.java
         + ConstantInfo.java
         + FieldInfo.java
+        + InterfaceInfo.java
         + MethodInfo.java
       - core
         + ClassFile.java
@@ -92,10 +91,13 @@ attributes[attributes_count] | × | 20%
         + U1.java
         + U2.java
         + U4.java
+        + U8.java
       - io
         + ClassFileReader.java
-      - test
+      - main
         + ClassFileParser.java
+      - test
+        + Test.java
 
 
 ## Class文件结构
