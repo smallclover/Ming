@@ -1,27 +1,32 @@
 package com.ming.core;
 
+import com.ming.base.AttributeInfo;
+import com.ming.base.FieldInfo;
+import com.ming.base.InterfaceInfo;
+import com.ming.base.MethodInfo;
+
 /**
  *
  * @author smallclover
- * class file structure
+ * class 文件结构
  */
 public class ClassFile {
 	private U4 magic;
 	private U2 minor_version;
 	private U2 major_version;
 	private U2 constant_pool_count;
-	//constant_pool
+	private ConstantPool constantPool;
 	private U2 access_flags;
 	private U2 this_class;
 	private U2 super_class;
 	private U2 interfaces_count;
-	//interfaces
+	private InterfaceInfo[] interfaces;
 	private U2 fields_count;
-	//fields
+	private FieldInfo[] fields;
 	private U2 methods_count;
-	//methods;
+	private MethodInfo[] methods;
 	private U2 attributes_count;
-	//attributes
+	private AttributeInfo[] attributes;
 
 	public U4 getMagic() {
 		return magic;
@@ -90,4 +95,43 @@ public class ClassFile {
 		this.attributes_count = attributes_count;
 	}
 
+	public ConstantPool getConstantPool() {
+		return constantPool;
+	}
+
+	public void setConstantPool(ConstantPool constantPool) {
+		this.constantPool = constantPool;
+	}
+
+	public InterfaceInfo[] getInterfaces() {
+		return interfaces;
+	}
+
+	public void setInterfaces(InterfaceInfo[] interfaces) {
+		this.interfaces = interfaces;
+	}
+
+	public FieldInfo[] getFields() {
+		return fields;
+	}
+
+	public void setFields(FieldInfo[] fields) {
+		this.fields = fields;
+	}
+
+	public MethodInfo[] getMethods() {
+		return methods;
+	}
+
+	public void setMethods(MethodInfo[] methods) {
+		this.methods = methods;
+	}
+
+	public AttributeInfo[] getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(AttributeInfo[] attributes) {
+		this.attributes = attributes;
+	}
 }

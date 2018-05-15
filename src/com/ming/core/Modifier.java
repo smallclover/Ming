@@ -15,10 +15,4 @@ public class Modifier {
 	public static final int ACC_ANNOTATION = 0x2000;
 	public static final int ACC_ENUM = 0x4000;
 
-	public static void main(String[] args) {
-		System.out.println(Integer.toHexString(ACC_PUBLIC | ACC_SUPER));
-		if (1 == ACC_PUBLIC) {
-			System.out.println("yes");
-		}
-	}
 }

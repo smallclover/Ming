@@ -47,8 +47,8 @@ public class AttributeCodeInfo extends AttributeInfo {
     		U2 inner_attribute_name_index = cfr.readU2();
             ConstantInfo[] ci = cp.getConstantInfo();
             attributes[i] = AttributeInfo.getSpecificAttributeInfo(inner_attribute_name_index, ((ConstantUtf8Info)ci[inner_attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-            System.out.println(attributes[i].getClass().getSimpleName());
-            System.out.println(attributes[i]);
+            // System.out.println(attributes[i].getClass().getSimpleName());
+            // System.out.println(attributes[i]);
     	}
 
     }

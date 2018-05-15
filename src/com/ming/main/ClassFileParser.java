@@ -1,4 +1,4 @@
-package com.ming.test;
+package com.ming.main;
 
 
 import java.io.File;
@@ -29,19 +29,20 @@ public class ClassFileParser {
     private static ClassFileReader cfr = null;
     private static ConstantPool cp = null;
     //这里可以更改为任意的class文件
-    private static String defaultClassFilePath="E:\\tools\\pleiades\\workspace\\HelloWorld.class";
+    private static String defaultClassFilePath;
     /**
      * 第一步读取class文件
      * @param classFilePath
      * @return
      */
-    public static void readClassFile(String classFilePath) {
+    private static void readClassFile(String classFilePath) {
         File file = new File(classFilePath);
 
         try {
             is = new FileInputStream(file);
             cfr = new ClassFileReader(is.readAllBytes());
             cp = new ConstantPool();
+            cf.setConstantPool(cp);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,96 +58,97 @@ public class ClassFileParser {
      * 0xff = 11111111
      * @throws IOException
      */
-    public static void magic() throws IOException {
+    private static void magic() throws IOException {
     	U4 magic = cfr.readU4();
 		cf.setMagic(magic);
-		System.out.println("[magic: " + magic.toHex() + "]");
+		// System.out.println("[magic: " + magic.toHex() + "]");
     }
 
     /**
-     * 打印jdk的次版本（现在似乎已经弃用，值一直是0）
+     * 设置jdk的次版本（现在似乎已经弃用，值一直是0）
      * minorVersion 占用两个字节的无符号整数
      * @throws IOException
      */
-    public static void minorVersion() throws IOException {
+    private static void minorVersion() throws IOException {
 		U2 minorVersion = cfr.readU2();
 		cf.setMinorVersion(minorVersion);
-		System.out.println("[minor_version: " + minorVersion.getValue() + "]");
+		// System.out.println("[minor_version: " + minorVersion.getValue() + "]");
     }
 
     /**
-     * 打印jdk的次版本（现在似乎已经弃用，值一直是0）
+     * 设置jdk的主版本（现在似乎已经弃用，值一直是0）
      * minorVersion 占用两个字节的无符号整数
      * @throws IOException
      */
-    public static void majorVersion() throws IOException {
+    private static void majorVersion() throws IOException {
 		U2 majorVersion = cfr.readU2();
 		cf.setMajorVersion(majorVersion);
-		System.out.println("[major_version: "+majorVersion.getValue() + "]");
+		// System.out.println("[major_version: "+majorVersion.getValue() + "]");
     }
 
     /**
-     * print constant_pool_count
-     * constantPoolCount 2 byte unsigned integer
+     * 设置 常量池（constant_pool_count）数量
+     * constantPoolCount 占用两个字节的无符号整数
      * @throws IOException
      */
-    public static void constantPoolCount() throws IOException {
+    private static void constantPoolCount() throws IOException {
     	U2 constantPoolCount = cfr.readU2();
 		cf.setConstantPoolCount(constantPoolCount);
-    	System.out.println("[constant_pool_count: "+ constantPoolCount.getValue() + "]");
+    	// System.out.println("[constant_pool_count: "+ constantPoolCount.getValue() + "]");
     }
 
     /**
      * read constant pool info ( null )
      * @throws IOException
      */
-    public static void constantInfo() throws IOException {
+    private static void constantInfo() throws IOException {
     	int length = cf.getConstantPoolCount().getValue();
     	ConstantInfo[] cpInfo = new ConstantInfo[length];
     	for( int i = 1; i < length;i ++) {
+
     	    //todo 对于double，long可能会有问题
     		U1 tag = cfr.readU1();
     		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
     	}
     	cp.setConstantInfo(cpInfo);
-    	for(ConstantInfo content: cp.getConstantInfo()) {
+/*    	for(ConstantInfo content: cp.getConstantInfo()) {
             if (content == null) {
                 continue;
             }
     		System.out.println(content.getClass().getSimpleName());
     		System.out.println(content);
-    	}
+    	}*/
     }
 
     /**
      * print access_flags
      * @throws IOException
      */
-    public static void accessFlags() throws IOException {
+    private static void accessFlags() throws IOException {
         U2 accessFlags = cfr.readU2();
         cf.setAccessFlags(accessFlags);
-        System.out.println("[access_flags: " + accessFlags.getValue() + "]\n");
+        // System.out.println("[access_flags: " + accessFlags.getValue() + "]\n");
     }
 
-    public static void thisClass() {
+    private static void thisClass() {
         U2 thisClass = cfr.readU2();
         cf.setThisClass(thisClass);
-        System.out.println("[this_class: " + thisClass.getValue() + "]\n");
+        // System.out.println("[this_class: " + thisClass.getValue() + "]\n");
     }
 
-    public static void superClass() {
+    private static void superClass() {
         U2 superClass = cfr.readU2();
         cf.setSuperClass(superClass);
-        System.out.println("[super_class:" + superClass.getValue() + "]\n");
+        // System.out.println("[super_class:" + superClass.getValue() + "]\n");
     }
 
-    public static void interfacesCount(){
+    private static void interfacesCount(){
         U2 interfacesCount = cfr.readU2();
         cf.setInterfacesCount(interfacesCount);
-        System.out.println("[interfaces_count:" + interfacesCount.getValue() + "]\n");
+        // System.out.println("[interfaces_count:" + interfacesCount.getValue() + "]\n");
     }
 
-    public static void interfaces() {
+    private static void interfaces() {
         //todo
         int length = cf.getInterfacesCount().getValue();
         if (length == 0) {
@@ -156,18 +158,18 @@ public class ClassFileParser {
         for (int i = 0; i < length;i ++) {
             interfaces[i] = cfr.readU2();
         }
-        for (U2 u2 : interfaces) {
+/*        for (U2 u2 : interfaces) {
             System.out.println(u2.getValue());
-        }
+        }*/
     }
 
-    public static void fieldCount() {
+    private static void fieldCount() {
         U2 fieldCount = cfr.readU2();
         cf.setFieldsCount(fieldCount);
-        System.out.println("[field_count: " + fieldCount.getValue() + "]\n");
+        // System.out.println("[field_count: " + fieldCount.getValue() + "]\n");
     }
 
-    public static void fields() {
+    private static void fields() {
         int length = cf.getFieldsCount().getValue();
 
         FieldInfo[] fis = new FieldInfo[length];
@@ -178,31 +180,31 @@ public class ClassFileParser {
             fis[i].setAccessFlags(cfr.readU2());
             fis[i].setNameIndex(cfr.readU2());
             fis[i].setDescriptorIndex(cfr.readU2());
-            System.out.println("[access_flags: "+ fis[i].getAccessFlags().getValue() +"]");
-            System.out.println("[name_index: "+ fis[i].getNameIndex().getValue() +"]");
-            System.out.println("[descriptor_index: "+ fis[i].getDescriptorIndex().getValue() +"]");
+            // System.out.println("[access_flags: "+ fis[i].getAccessFlags().getValue() +"]");
+            // System.out.println("[name_index: "+ fis[i].getNameIndex().getValue() +"]");
+            // System.out.println("[descriptor_index: "+ fis[i].getDescriptorIndex().getValue() +"]");
             U2 att_length = cfr.readU2();
             fis[i].setAttributesCount(att_length);
-            System.out.println("[attributes_count: "+ fis[i].getAttributesCount().getValue() +"]");
+            // System.out.println("[attributes_count: "+ fis[i].getAttributesCount().getValue() +"]");
             AttributeInfo[] attributes = new AttributeInfo[att_length.getValue()];
             for (int j = 0; j < attributes.length; j++) {
                 U2 attribute_name_index = cfr.readU2();
                 ConstantInfo[] ci = cp.getConstantInfo();
                 //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
                 attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-                System.out.println(attributes[j].getClass().getSimpleName());
-                System.out.println(attributes[j]);
+                // System.out.println(attributes[j].getClass().getSimpleName());
+                //System.out.println(attributes[j]);
             }
         }
     }
 
-    public static void methodCount() {
+    private static void methodCount() {
     	U2 methodCount = cfr.readU2();
     	cf.setMethodsCount(methodCount);
-    	System.out.println("[method_count: " + methodCount.getValue() + "]\n");
+    	// System.out.println("[method_count: " + methodCount.getValue() + "]\n");
     }
 
-    public static void methods() {
+    private static void methods() {
     	int length = cf.getMethodsCount().getValue();
 
         MethodInfo[] mis = new MethodInfo[length];
@@ -213,45 +215,45 @@ public class ClassFileParser {
             mis[i].setAccessFlags(cfr.readU2());
             mis[i].setNameIndex(cfr.readU2());
             mis[i].setDescriptorIndex(cfr.readU2());
-            System.out.println("[access_flags: "+ mis[i].getAccessFlags().getValue() +"]");
-            System.out.println("[name_index: "+ mis[i].getNameIndex().getValue() +"]");
-            System.out.println("[descriptor_index: "+ mis[i].getDescriptorIndex().getValue() +"]");
+            // System.out.println("[access_flags: "+ mis[i].getAccessFlags().getValue() +"]");
+            // System.out.println("[name_index: "+ mis[i].getNameIndex().getValue() +"]");
+            // System.out.println("[descriptor_index: "+ mis[i].getDescriptorIndex().getValue() +"]");
             U2 att_length = cfr.readU2();
             mis[i].setAttributesCount(att_length);
-            System.out.println("[attributes_count: "+ mis[i].getAttributesCount().getValue() +"]");
+            // System.out.println("[attributes_count: "+ mis[i].getAttributesCount().getValue() +"]");
             AttributeInfo[] attributes = new AttributeInfo[att_length.getValue()];
             for (int j = 0; j < attributes.length; j++) {
                 U2 attribute_name_index = cfr.readU2();
                 ConstantInfo[] ci = cp.getConstantInfo();
                 //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
                 attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-                System.out.println(attributes[j].getClass().getSimpleName());
-                System.out.println(attributes[j]);
+                // System.out.println(attributes[j].getClass().getSimpleName());
+                // System.out.println(attributes[j]);
                 //todo 读取code数据
             }
         }
     }
 
-    public static void attributeCount() {
+    private static void attributeCount() {
     	U2 attributes_count = cfr.readU2();
     	cf.setAttributesCount(attributes_count);
-    	System.out.println("[attributes_count: " + attributes_count.getValue() + "]\n");
+    	// System.out.println("[attributes_count: " + attributes_count.getValue() + "]\n");
     }
 
-    public static void attributes() {
+    private static void attributes() {
         AttributeInfo[] attributes = new AttributeInfo[cf.getAttributesCount().getValue()];
         for (int j = 0; j < attributes.length; j++) {
             U2 attribute_name_index = cfr.readU2();
             ConstantInfo[] ci = cp.getConstantInfo();
             //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
             attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-            System.out.println(attributes[j].getClass().getSimpleName());
-            System.out.println(attributes[j]);
+            // System.out.println(attributes[j].getClass().getSimpleName());
+            // System.out.println(attributes[j]);
             //todo 读取code数据
         }
     }
 
-    public static void main(String[] args) {
+    private static void init() {
         ClassFileParser.readClassFile(defaultClassFilePath);
         try {
             ClassFileParser.magic();
@@ -271,9 +273,15 @@ public class ClassFileParser {
             ClassFileParser.attributeCount();
             ClassFileParser.attributes();
         } catch(IOException e) {
-        	e.printStackTrace();
+            e.printStackTrace();
         }
 
+    }
+
+    public static ClassFile getClassFile(String classFilePath) {
+        defaultClassFilePath = classFilePath;
+        init();
+        return cf;
     }
 
 }

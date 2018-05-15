@@ -27,7 +27,7 @@ public class HelloWorld {
 
 ### 运行
 
-找到 ```java  com.ming.test.ClassFileParser.java``` 文件，
+找到 ```java  com.ming.main.ClassFileParser.java``` 文件，
 修改```java defaultClassFilePath```字段为```java HelloWorld.class ```文件的路径
 然后运行即可在控制台打印出class文件的解析结果。
 
@@ -63,6 +63,8 @@ attributes[attributes_count] | × | 20%
           - AttributeCodeInfo.java
           - AttributeConstantValueInfo.java
           - AttributeLineNumberTableInfo.java
+          - AttributeLocalVariableTableInfo.java
+          - AttributeStackMapTable.java
           - AttributeSoureFileInfo.java
         + constant
           - ConstantClassInfo.java

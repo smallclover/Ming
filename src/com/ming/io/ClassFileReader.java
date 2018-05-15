@@ -3,11 +3,12 @@ package com.ming.io;
 import com.ming.core.U1;
 import com.ming.core.U2;
 import com.ming.core.U4;
+import com.ming.core.U8;
 
 /**
  *
  * @author smallclover
- * classfile all byte
+ * 提供U1，U2, U4, U8 四个方法来读取无符号整数
  */
 public class ClassFileReader {
 
@@ -20,6 +21,7 @@ public class ClassFileReader {
 
 	/**
 	 * read 1 byte unsigned integer
+	 * 读取一个字节的无符号整数
 	 * @return
 	 */
 	public U1 readU1() {
@@ -29,7 +31,8 @@ public class ClassFileReader {
 	}
 
 	/**
-	 * read 1 byte unsigned integer
+	 * read 2 byte unsigned integer
+	 * 读取两个字节的无符号整数
 	 * @return
 	 */
 	public U2 readU2() {
@@ -43,7 +46,8 @@ public class ClassFileReader {
 	}
 
 	/**
-	 * read 1 byte unsigned integer
+	 * read 4 byte unsigned integer
+	 * 读取四个字节的无符号整数
 	 * @return
 	 */
 	public U4 readU4() {
@@ -56,6 +60,20 @@ public class ClassFileReader {
 		return u4;
 	}
 
+	/**
+	 * 读取8个字节的无符号整数
+	 * @return
+	 */
+	public U8 readU8() {
+		byte[] uint64 = new byte[8];
+		for (int i = 0;i < 8; i ++) {
+			uint64[i] = classfile[currentIndex];
+			currentIndex++;
+		}
+
+		U8 u8 = new U8(uint64);
+		return u8;
+	}
 
 	private void checkIndex() {
 		if(currentIndex >= classfile.length) {
