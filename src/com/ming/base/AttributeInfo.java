@@ -3,7 +3,10 @@ package com.ming.base;
 import com.ming.base.attribute.AttributeCodeInfo;
 import com.ming.base.attribute.AttributeConstantValueInfo;
 import com.ming.base.attribute.AttributeLineNumberTableInfo;
+import com.ming.base.attribute.AttributeLocalVariableTableInfo;
 import com.ming.base.attribute.AttributeSourceFileInfo;
+import com.ming.base.attribute.AttributeStackMapTable;
+import com.ming.core.ConstantPool;
 import com.ming.core.U2;
 import com.ming.io.ClassFileReader;
 
@@ -25,20 +28,28 @@ public abstract class AttributeInfo {
     // 方法的局部变量描述
     private static final String ATTRIBUTE_LocalVariableTable_info = "LocalVariableTable";
 
+    private static final String ATTRIBUTE_StackMapTable_info = "StackMapTable";
+
     public AttributeInfo() {
     }
 
-    public static AttributeInfo getSpecificAttributeInfo(U2 name_index, String name, ClassFileReader cfr) {
+    public static AttributeInfo getSpecificAttributeInfo(U2 name_index, String name, ClassFileReader cfr, ConstantPool cp) {
         switch (name) {
             case ATTRIBUTE_Code_info :
-                return new AttributeCodeInfo(name_index, cfr);
+                return new AttributeCodeInfo(name_index, cfr, cp);
             case ATTRIBUTE_SourceFile_info:
-                return new AttributeSourceFileInfo();
+                return new AttributeSourceFileInfo(name_index, cfr);
             case ATTRIBUTE_ConstantValue_info:
                 return new AttributeConstantValueInfo(name_index, cfr);
             case ATTRIBUTE_LineNumberTable_info:
-                return new AttributeLineNumberTableInfo();
+                return new AttributeLineNumberTableInfo(name_index, cfr);
+            case ATTRIBUTE_LocalVariableTable_info:
+                return new AttributeLocalVariableTableInfo(name_index, cfr);
+            case ATTRIBUTE_StackMapTable_info:
+            	return new AttributeStackMapTable(name_index, cfr);
             default:
+
+            	// JDK6 [Extended Attr] StackMapTable              Code-Attribute
                 throw new RuntimeException("cant find specific attribute");
         }
     }

@@ -1,6 +1,9 @@
 package com.ming.base.attribute;
 
 import com.ming.base.AttributeInfo;
+import com.ming.base.ConstantInfo;
+import com.ming.base.constant.ConstantUtf8Info;
+import com.ming.core.ConstantPool;
 import com.ming.core.U1;
 import com.ming.core.U2;
 import com.ming.core.U4;
@@ -19,7 +22,7 @@ public class AttributeCodeInfo extends AttributeInfo {
     private AttributeInfo attributes [];
 
 
-    public AttributeCodeInfo(U2 name_index, ClassFileReader cfr) {
+    public AttributeCodeInfo(U2 name_index, ClassFileReader cfr, ConstantPool cp) {
     	attribute_name_index = name_index;
     	attribute_length = cfr.readU4();
     	max_stack = cfr.readU2();
@@ -33,21 +36,30 @@ public class AttributeCodeInfo extends AttributeInfo {
 
     	exception_table_length = cfr.readU2();
     	int etl = exception_table_length.getValue();
+    	exception_table = new ExceptionTable[etl];
     	for(int i = 0; i < etl; i++) {
     		exception_table[i] = new ExceptionTable(cfr);
     	}
     	attributes_count = cfr.readU2();
-    	//attributes
+    	int ac = attributes_count.getValue();
+    	attributes = new AttributeInfo[ac];
+    	for(int i = 0; i < ac; i ++) {
+    		U2 inner_attribute_name_index = cfr.readU2();
+            ConstantInfo[] ci = cp.getConstantInfo();
+            attributes[i] = AttributeInfo.getSpecificAttributeInfo(inner_attribute_name_index, ((ConstantUtf8Info)ci[inner_attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
+            System.out.println(attributes[i].getClass().getSimpleName());
+            System.out.println(attributes[i]);
+    	}
 
     }
 
 
 
     private class ExceptionTable {
-    	U2 start_pc;
-    	U2 end_pc;
-    	U2 handler_pc;
-    	U2 catch_type;
+    	private U2 start_pc;
+    	private U2 end_pc;
+    	private U2 handler_pc;
+    	private U2 catch_type;
 
     	public ExceptionTable(ClassFileReader cfr) {
     		start_pc = cfr.readU2();
@@ -84,9 +96,6 @@ public class AttributeCodeInfo extends AttributeInfo {
 
 
     }
-
-
-
 
 
 	public U2 getAttributeNameIndex() {
@@ -248,6 +257,27 @@ public class AttributeCodeInfo extends AttributeInfo {
 
 	@Override
 	public String toString() {
-		return "[attribute_name_index: " + attribute_name_index.getValue() + "]\n";
+		String parent_info = "[attribute_name_index: " + attribute_name_index.getValue() + "]\n"
+				+ "[attribute_length: " + attribute_length.getValue() + "]\n"
+				+ "[max_stack: " + max_stack.getValue() + "]\n"
+				+ "[max_locals: " + max_locals.getValue() + "]\n"
+				+ "[code_length: " + code_length.getValue() + "]\n";
+		StringBuffer sb_code = new StringBuffer();
+		for(int i = 0; i < code.length; i ++) {
+			sb_code.append(code[i].getValue() + "\n");
+		}
+		String etl = "[exception_table_length: " + exception_table_length.getValue() + "]\n";
+		StringBuffer sb_exception_table = new StringBuffer();
+		for(int i = 0; i < exception_table.length; i ++) {
+			sb_exception_table.append("[" + i + "]");
+			sb_exception_table.append("[start_pc: " + exception_table[i].getStartPc().getValue() + "]\n");
+			sb_exception_table.append("[end_pc: " + exception_table[i].getEndPc().getValue() + "]\n");
+			sb_exception_table.append("[handler_pc: " + exception_table[i].getHandlerPc().getValue() + "]\n");
+			sb_exception_table.append("[catch_type: " + exception_table[i].getCatchType().getValue() + "]\n");
+
+		}
+		String ac  = "[attributes_count: " + attributes_count.getValue() + "]\n";
+		return parent_info + sb_code.toString() + etl + sb_exception_table.toString() + ac;
 	}
+
 }
