@@ -2,7 +2,6 @@ package com.ming.core;
 
 import com.ming.base.AttributeInfo;
 import com.ming.base.FieldInfo;
-import com.ming.base.InterfaceInfo;
 import com.ming.base.MethodInfo;
 
 /**
@@ -20,7 +19,7 @@ public class ClassFile {
 	private U2 this_class;
 	private U2 super_class;
 	private U2 interfaces_count;
-	private InterfaceInfo[] interfaces;
+	private U2[] interfaces;
 	private U2 fields_count;
 	private FieldInfo[] fields;
 	private U2 methods_count;
@@ -103,11 +102,11 @@ public class ClassFile {
 		this.constantPool = constantPool;
 	}
 
-	public InterfaceInfo[] getInterfaces() {
+	public U2[] getInterfaces() {
 		return interfaces;
 	}
 
-	public void setInterfaces(InterfaceInfo[] interfaces) {
+	public void setInterfaces(U2[] interfaces) {
 		this.interfaces = interfaces;
 	}
 

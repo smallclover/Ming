@@ -5,8 +5,9 @@ Class文件解析器
 
 ## 版本(更新说明)
 
-版本 | 更新说明
----- | ---- 
++ 0.1.0
+  - 修复读取Double和Long类型时出现找不到指定类型的错误
+  - 移除jdk9的方法InputStream#readAllBytes()，替换为Files#readAllBytes()，以支持更低版本
 
 
 ## 使用方法
@@ -43,18 +44,18 @@ magic | √ | 100%
 minor_version | √ | 100%
 major_version | √ | 100%
 constant_pool_count | √ | 100%
-constant_pool[constant_pool_count] | √ | 100%
+constant_pool[constant_pool_count] | × | 90%
 access_flags | √ | 100%
 this_class | √ | 100%
 super_class | √ | 100%
 interfaces_count | √ | 100%
-interfaces[interfaces_count] | × | 0%
+interfaces[interfaces_count] | √ | 100%
 fields_count | √ | 100%
-fields[fields_count] | × | 20%
+fields[fields_count] | × | 90%
 methods_count | √ | 100%
-methods[methods_count] | √ | 100%
-attributes_count | × | 20%
-attributes[attributes_count] | × | 20%
+methods[methods_count] | × | 90%
+attributes_count | √ | 100%
+attributes[attributes_count] | × | 90%
 
 ## 目录说明（暂时，会根据改变更新）
 

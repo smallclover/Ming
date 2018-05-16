@@ -53,7 +53,7 @@ public class ClassFileParser {
     }
 
     /**
-     * 获取class文件魔数（magic）
+     * 读取 class文件魔数（magic）
      * magic = 0xcafebabe (16 进制)
      * magic占用四个字节的无符号整数
      * byte代表一个字节，但是是有符号整数，取值范围是[-127~128]
@@ -68,7 +68,7 @@ public class ClassFileParser {
     }
 
     /**
-     * 设置jdk的次版本（现在似乎已经弃用，值一直是0）
+     * 读取 jdk的次版本（现在似乎已经弃用，值一直是0）
      * minorVersion 占用两个字节的无符号整数
      * @throws IOException
      */
@@ -79,7 +79,7 @@ public class ClassFileParser {
     }
 
     /**
-     * 设置jdk的主版本（现在似乎已经弃用，值一直是0）
+     * 读取 jdk的主版本（现在似乎已经弃用，值一直是0）
      * minorVersion 占用两个字节的无符号整数
      * @throws IOException
      */
@@ -90,7 +90,7 @@ public class ClassFileParser {
     }
 
     /**
-     * 设置 常量池（constant_pool_count）数量
+     * 读取 常量池（constant_pool_count）数量
      * constantPoolCount 占用两个字节的无符号整数
      * @throws IOException
      */
@@ -101,7 +101,7 @@ public class ClassFileParser {
     }
 
     /**
-     * read constant pool info ( null )
+     * 读取常量池具体信息
      * @throws IOException
      */
     private static void constantInfo() throws IOException {
@@ -113,22 +113,15 @@ public class ClassFileParser {
     		U1 tag = cfr.readU1();
     		if(tag.getValue() == 6 || tag.getValue() == 5) {
         		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
-        		i += 2;
+        		i += 2; // 如果常量池中的类型时double或者long，将会占用两个连续的位置
+                // 假设占用的第一个索引是n，那么n+1将不可用。
     		}else {
         		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
         		i ++;
     		}
 
     	}
-/*    	for( int i = 1; i < length;i ++) {
 
-    	    //todo 对于double，long可能会有问题
-    		U1 tag = cfr.readU1();
-    		if(tag.getValue() == 6 || tag.getValue() == 5) {
-
-    		}
-    		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
-    	}*/
     	cp.setConstantInfo(cpInfo);
 /*    	for(ConstantInfo content: cp.getConstantInfo()) {
             if (content == null) {
@@ -140,7 +133,7 @@ public class ClassFileParser {
     }
 
     /**
-     * print access_flags
+     * 读取 access_flags
      * @throws IOException
      */
     private static void accessFlags() throws IOException {
@@ -149,34 +142,46 @@ public class ClassFileParser {
         // System.out.println("[access_flags: " + accessFlags.getValue() + "]\n");
     }
 
+    /**
+     * 读取 this_class
+     */
     private static void thisClass() {
         U2 thisClass = cfr.readU2();
         cf.setThisClass(thisClass);
         // System.out.println("[this_class: " + thisClass.getValue() + "]\n");
     }
 
+    /**
+     * 读取 super_class
+     */
     private static void superClass() {
         U2 superClass = cfr.readU2();
         cf.setSuperClass(superClass);
         // System.out.println("[super_class:" + superClass.getValue() + "]\n");
     }
 
+    /**
+     * 读取 interface_count
+     */
     private static void interfacesCount(){
         U2 interfacesCount = cfr.readU2();
         cf.setInterfacesCount(interfacesCount);
         // System.out.println("[interfaces_count:" + interfacesCount.getValue() + "]\n");
     }
 
+    /**
+     * 读取 interfaces
+     */
     private static void interfaces() {
-        //todo
         int length = cf.getInterfacesCount().getValue();
         if (length == 0) {
-            //System.out.println(0);
+            return;
         }
         U2[] interfaces = new U2[length];
         for (int i = 0; i < length;i ++) {
             interfaces[i] = cfr.readU2();
         }
+        cf.setInterfaces(interfaces);
 /*        for (U2 u2 : interfaces) {
             System.out.println(u2.getValue());
         }*/

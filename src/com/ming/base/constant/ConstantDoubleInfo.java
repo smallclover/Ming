@@ -15,4 +15,9 @@ public class ConstantDoubleInfo extends ConstantInfo{
 		high_bytes = cfr.readU4();
 		low_bytes = cfr.readU4();
 	}
+
+	@Override
+	public String toString() {
+		return "[value: " + high_bytes.toHex() + low_bytes.toHex() + "]\n";
+	}
 }
