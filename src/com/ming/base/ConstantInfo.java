@@ -32,6 +32,7 @@ public class ConstantInfo {
 	}
 
 	public static ConstantInfo getSpecificConstantInfo(int tag, ClassFileReader cfr) {
+		System.out.println("tag:"+tag);
 		switch (tag) {
 			case CONSTANT_Utf8_info:
 				return new ConstantUtf8Info(cfr);
@@ -42,7 +43,7 @@ public class ConstantInfo {
 			case CONSTANT_Long_info:
 				return new ConstantLongInfo();
 			case CONSTANT_Double_info:
-				return new ConstantDoubleInfo();
+				return new ConstantDoubleInfo(cfr);
 			case CONSTANT_Class_info:
 				return new ConstantClassInfo(cfr);
 			case CONSTANT_String_info:

@@ -108,12 +108,27 @@ public class ClassFileParser {
     	int length = cf.getConstantPoolCount().getValue();
     	ConstantInfo[] cpInfo = new ConstantInfo[length];
     	// 常量池中的项目是从索引值1开始的
-    	for( int i = 1; i < length;i ++) {
+    	int i = 1;
+    	while(i < length) {
+    		U1 tag = cfr.readU1();
+    		if(tag.getValue() == 6 || tag.getValue() == 5) {
+        		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
+        		i += 2;
+    		}else {
+        		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
+        		i ++;
+    		}
+
+    	}
+/*    	for( int i = 1; i < length;i ++) {
 
     	    //todo 对于double，long可能会有问题
     		U1 tag = cfr.readU1();
+    		if(tag.getValue() == 6 || tag.getValue() == 5) {
+
+    		}
     		cpInfo[i] = ConstantInfo.getSpecificConstantInfo(tag.getValue() ,cfr);
-    	}
+    	}*/
     	cp.setConstantInfo(cpInfo);
 /*    	for(ConstantInfo content: cp.getConstantInfo()) {
             if (content == null) {

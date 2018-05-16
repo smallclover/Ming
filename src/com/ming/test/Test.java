@@ -17,11 +17,11 @@ public class Test {
         // 获取magic
         System.out.println(cf.getMagic().toHex());
         // 获取次版本
-        System.out.println(cf.getMajorVersion().getValue());
+        System.out.println(cf.getMinorVersion().getValue());
         // 获取主版本
         System.out.println(cf.getMajorVersion().getValue());
         // 获取常量池数量
-        System.out.println(cf.getConstantPoolCount());
+        System.out.println(cf.getConstantPoolCount().getValue());
         // 获取常量池内容
 /*        ConstantInfo[] ci = cf.getConstantPool().getConstantInfo();
 
