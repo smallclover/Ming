@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.ming.base.AttributeInfo;
 import com.ming.base.ConstantInfo;
@@ -40,7 +42,8 @@ public class ClassFileParser {
 
         try {
             is = new FileInputStream(file);
-            cfr = new ClassFileReader(is.readAllBytes());
+            //cfr = new ClassFileReader(is.readAllBytes()); //the method since jdk9
+            cfr = new ClassFileReader(Files.readAllBytes(Paths.get(defaultClassFilePath)));// maybe support jdk1.4 ?
             cp = new ConstantPool();
             cf.setConstantPool(cp);
         } catch (IOException e) {
@@ -104,6 +107,7 @@ public class ClassFileParser {
     private static void constantInfo() throws IOException {
     	int length = cf.getConstantPoolCount().getValue();
     	ConstantInfo[] cpInfo = new ConstantInfo[length];
+    	// 常量池中的项目是从索引值1开始的
     	for( int i = 1; i < length;i ++) {
 
     	    //todo 对于double，long可能会有问题
@@ -255,6 +259,9 @@ public class ClassFileParser {
         }
     }
 
+    /**
+     * 初始化所有数据，外部调用ClassFile时，数据已经全部被加载好。
+     */
     private static void init() {
         ClassFileParser.readClassFile(defaultClassFilePath);
         try {
