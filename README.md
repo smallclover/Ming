@@ -88,7 +88,6 @@ attributes[attributes_count] | × | 90%
         + AttributeInfo.java
         + ConstantInfo.java
         + FieldInfo.java
-        + InterfaceInfo.java
         + MethodInfo.java
       - core
         + ClassFile.java

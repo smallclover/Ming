@@ -123,13 +123,7 @@ public class ClassFileParser {
     	}
 
     	cp.setConstantInfo(cpInfo);
-/*    	for(ConstantInfo content: cp.getConstantInfo()) {
-            if (content == null) {
-                continue;
-            }
-    		System.out.println(content.getClass().getSimpleName());
-    		System.out.println(content);
-    	}*/
+
     }
 
     /**
@@ -182,9 +176,6 @@ public class ClassFileParser {
             interfaces[i] = cfr.readU2();
         }
         cf.setInterfaces(interfaces);
-/*        for (U2 u2 : interfaces) {
-            System.out.println(u2.getValue());
-        }*/
     }
 
     private static void fieldCount() {
