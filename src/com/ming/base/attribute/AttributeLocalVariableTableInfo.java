@@ -5,6 +5,11 @@ import com.ming.core.U2;
 import com.ming.core.U4;
 import com.ming.io.ClassFileReader;
 
+/**
+ * 局部变量表
+ * @author smallclover
+ *
+ */
 public class AttributeLocalVariableTableInfo extends AttributeInfo{
 	private U2 attribute_name_index;
 	private U4 attribute_length;

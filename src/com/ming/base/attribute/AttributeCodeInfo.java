@@ -9,16 +9,38 @@ import com.ming.core.U2;
 import com.ming.core.U4;
 import com.ming.io.ClassFileReader;
 
+/**
+ *
+ * @author smallclover
+ * 只存在于method_info结构中。Code属性存放字节码等与方法相关的信息
+ *
+ *
+ *
+ * 不是必须的属性，如果该方法是抽象方法将不会拥有该属性
+ * 需要注意的是JDK8种接口可以添加default方法，default方法可以拥有方法体，
+ * 所以是有Code属性
+ *
+ */
 public class AttributeCodeInfo extends AttributeInfo {
+	// 属性的名字的索引，指向常量池ConstantUtf8Info，值固定为[Code]
     private U2 attribute_name_index;
+    // Code属性的长度，表示后面紧跟着的N个字节用来表示该属性的信息
     private U4 attribute_length;
+    // 表示局部变量表所需要的存储空间大小
     private U2 max_stack;
+    // 操作数栈深度的最大值
     private U2 max_locals;
+    // 表示机器码的长度
     private U4 code_length;
+    // 机器码
     private U1 code [];
+    // 异常信息表的长度
     private U2 exception_table_length;
+    // 异常信息
     private ExceptionTable exception_table[];
+    // 表示Code属性表的其他属性的数目
     private U2 attributes_count;
+
     private AttributeInfo attributes [];
 
 
@@ -54,7 +76,13 @@ public class AttributeCodeInfo extends AttributeInfo {
     }
 
 
-
+    /**
+     *
+     * @author smallclover
+     * 异常的跳转信息
+     * 处理的是
+     * try{}catch(){}类型的异常
+     */
     private class ExceptionTable {
     	private U2 start_pc;
     	private U2 end_pc;

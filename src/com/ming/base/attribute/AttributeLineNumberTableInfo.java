@@ -5,6 +5,11 @@ import com.ming.core.U2;
 import com.ming.core.U4;
 import com.ming.io.ClassFileReader;
 
+/**
+ * Java源码行号和机器指令对应关系
+ * @author smallclover
+ *
+ */
 public class AttributeLineNumberTableInfo extends AttributeInfo {
 	private U2 attribute_name_index;
 	private U4 attribute_length;
