@@ -11,7 +11,7 @@ public class Test {
     public static void main(String[] args) {
 
         //class文件的绝对路径
-        String path = "C:\\Users\\smallclover\\Desktop\\Simple.class";
+        String path = "C:\\Users\\nesjuser01\\Desktop\\Simple.class";
 
         //class文件实体类，可以通过该类来获得class文件的所有属性
         //具体可以获得属性可以参考ClassFile实体类
@@ -46,8 +46,11 @@ public class Test {
         System.out.println(cf.getInterfacesCount().getValue());
         // 获取接口
         U2[] interfaces = cf.getInterfaces();
-        for (int i = 0; i < interfaces.length; i++) {
-            System.out.println(interfaces[i].getValue());
+        if(interfaces != null) {
+            for (int i = 0; i < interfaces.length; i++) {
+                System.out.println(interfaces[i].getValue());
+            }
         }
+
     }
 }

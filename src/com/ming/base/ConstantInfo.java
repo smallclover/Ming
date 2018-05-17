@@ -36,9 +36,9 @@ public class ConstantInfo {
 			case CONSTANT_Utf8_info:
 				return new ConstantUtf8Info(cfr);
 			case CONSTANT_Integer_info:
-				return new ConstantIntegerInfo();//todo
+				return new ConstantIntegerInfo(cfr);//todo
 			case CONSTANT_Float_info:
-				return new ConstantFloatInfo();//todo
+				return new ConstantFloatInfo(cfr);//todo
 			case CONSTANT_Long_info:
 				return new ConstantLongInfo(cfr);//todo
 			case CONSTANT_Double_info:
@@ -54,7 +54,7 @@ public class ConstantInfo {
 			case CONSTANT_NameAndType_info:
 				return new ConstantNameAndTypeInfo(cfr);
 			default:
-				throw new RuntimeException("can't find specific type");
+				throw new RuntimeException("can't find specific type tag: " + tag);
 		}
 	}
 
