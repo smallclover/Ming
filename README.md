@@ -57,7 +57,7 @@ methods[methods_count] | × | 90%
 attributes_count | √ | 100%
 attributes[attributes_count] | × | 90%
 
-## 目录说明（暂时，会根据改变更新）
+## 目录说明（最后更新时间 2018/05/17）
 
 + src
   - com
