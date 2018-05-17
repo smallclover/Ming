@@ -30,4 +30,4 @@ CONSTANT_MethodType | 16
 CONSTANT_InvokeDynamic | 18
 
 ### 常量池类型说明
-  [CONSTANT_Class](CONSTANT_Class.md)
+  + [CONSTANT_Class](CONSTANT_Class.md)
