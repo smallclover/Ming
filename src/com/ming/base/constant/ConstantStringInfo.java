@@ -19,7 +19,7 @@ public class ConstantStringInfo extends ConstantInfo {
 
 	@Override
 	public String toString() {
-		return "[tag: " + tag.getValue() + "]\n"
-				+ "[string_index: " + string_index.getValue() + "]\n";
+		return "[tag]: " + tag.getValue() + "\n"
+				+ "[string_index]: " + string_index.getValue() + "\n";
 	}
 }

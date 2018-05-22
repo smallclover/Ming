@@ -21,8 +21,8 @@ public class ConstantNameAndTypeInfo extends ConstantInfo {
 
 	@Override
 	public String toString() {
-		return "[tag: " + tag.getValue() + "]\n"
-				+ "[name_index: " + name_index.getValue() + "]\n"
-				+ "[descriptor_index: " + descriptor_index.getValue() + "]\n";
+		return "[tag]: " + tag.getValue() + "\n"
+				+ "[name_index]: " + name_index.getValue() + "\n"
+				+ "[descriptor_index]: " + descriptor_index.getValue() + "\n";
 	}
 }

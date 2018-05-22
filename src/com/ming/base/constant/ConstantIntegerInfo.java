@@ -20,7 +20,7 @@ public class ConstantIntegerInfo extends ConstantInfo {
 
     @Override
     public String toString() {
-        return "[value: " + value.toHex() + "]\n";
+        return "[value]: " + value.toHex() + "\n";
     }
 	//todo
 }

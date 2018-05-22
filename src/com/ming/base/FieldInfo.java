@@ -48,4 +48,13 @@ public class FieldInfo {
     public void setAttributes(AttributeInfo[] attributes) {
         this.attributes = attributes;
     }
+
+
+/*    @Override
+    public String toString() {
+        return "[access_flags]: " + access_flags.getValue() + "\n"
+                + "[name_index]: " + name_index.getValue() + "\n"
+                + "[descriptor_index]: " + descriptor_index.getValue() + "\n"
+                + "[attributes_count]: " + attributes_count.getValue() + "\n";
+    }*/
 }

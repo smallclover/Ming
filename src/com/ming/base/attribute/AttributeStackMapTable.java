@@ -36,6 +36,6 @@ public class AttributeStackMapTable extends AttributeInfo{
 
 	@Override
 	public String toString() {
-		return "[attribute_name_index: " + attribute_name_index.getValue() + "]";
+		return "[attribute_name_index]: " + attribute_name_index.getValue() + "\n";
 	}
 }

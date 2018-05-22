@@ -8,7 +8,8 @@ Class文件解析器
 + 0.1.0
   - 修复读取Double和Long类型时出现找不到指定类型的错误
   - 移除jdk9的方法InputStream#readAllBytes()，替换为Files#readAllBytes()，以支持更低版本
-
++ 0.1.1
+  - 完善了测试方法的输出信息，现在基本可以完整的展示整个class文件的信息
 
 ## 使用方法
 
@@ -110,6 +111,5 @@ attributes[attributes_count] | × | 90%
       - CONSTANT_Class_info.md
       - CONSTANT_Fieldref_info.md
     + attribure
-## 文档索引
 
 

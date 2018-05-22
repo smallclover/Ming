@@ -15,6 +15,6 @@ public class ConstantFloatInfo extends ConstantInfo{
 
     @Override
     public String toString() {
-        return "[value: " + value.toHex() + "]\n";
+        return "[value]: " + value.toHex() + "\n";
     }
 }

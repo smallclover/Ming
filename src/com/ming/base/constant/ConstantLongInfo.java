@@ -21,6 +21,6 @@ public class ConstantLongInfo extends ConstantInfo{
 
     @Override
     public String toString() {
-        return "[value: " + high_bytes.toHex() + low_bytes.toHex() + "]\n";
+        return "[value]: " + high_bytes.toHex() + low_bytes.toHex() + "\n";
     }
 }

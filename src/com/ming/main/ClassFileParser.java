@@ -64,7 +64,6 @@ public class ClassFileParser {
     private static void magic() throws IOException {
     	U4 magic = cfr.readU4();
 		cf.setMagic(magic);
-		// System.out.println("[magic: " + magic.toHex() + "]");
     }
 
     /**
@@ -75,7 +74,6 @@ public class ClassFileParser {
     private static void minorVersion() throws IOException {
 		U2 minorVersion = cfr.readU2();
 		cf.setMinorVersion(minorVersion);
-		// System.out.println("[minor_version: " + minorVersion.getValue() + "]");
     }
 
     /**
@@ -86,7 +84,6 @@ public class ClassFileParser {
     private static void majorVersion() throws IOException {
 		U2 majorVersion = cfr.readU2();
 		cf.setMajorVersion(majorVersion);
-		// System.out.println("[major_version: "+majorVersion.getValue() + "]");
     }
 
     /**
@@ -97,7 +94,6 @@ public class ClassFileParser {
     private static void constantPoolCount() throws IOException {
     	U2 constantPoolCount = cfr.readU2();
 		cf.setConstantPoolCount(constantPoolCount);
-    	// System.out.println("[constant_pool_count: "+ constantPoolCount.getValue() + "]");
     }
 
     /**
@@ -133,7 +129,6 @@ public class ClassFileParser {
     private static void accessFlags() throws IOException {
         U2 accessFlags = cfr.readU2();
         cf.setAccessFlags(accessFlags);
-        // System.out.println("[access_flags: " + accessFlags.getValue() + "]\n");
     }
 
     /**
@@ -142,7 +137,6 @@ public class ClassFileParser {
     private static void thisClass() {
         U2 thisClass = cfr.readU2();
         cf.setThisClass(thisClass);
-        // System.out.println("[this_class: " + thisClass.getValue() + "]\n");
     }
 
     /**
@@ -151,7 +145,6 @@ public class ClassFileParser {
     private static void superClass() {
         U2 superClass = cfr.readU2();
         cf.setSuperClass(superClass);
-        // System.out.println("[super_class:" + superClass.getValue() + "]\n");
     }
 
     /**
@@ -160,7 +153,6 @@ public class ClassFileParser {
     private static void interfacesCount(){
         U2 interfacesCount = cfr.readU2();
         cf.setInterfacesCount(interfacesCount);
-        // System.out.println("[interfaces_count:" + interfacesCount.getValue() + "]\n");
     }
 
     /**
@@ -181,9 +173,11 @@ public class ClassFileParser {
     private static void fieldCount() {
         U2 fieldCount = cfr.readU2();
         cf.setFieldsCount(fieldCount);
-        // System.out.println("[field_count: " + fieldCount.getValue() + "]\n");
     }
 
+    /**
+     * 读取属性的详细信息
+     */
     private static void fields() {
         int length = cf.getFieldsCount().getValue();
 
@@ -195,30 +189,32 @@ public class ClassFileParser {
             fis[i].setAccessFlags(cfr.readU2());
             fis[i].setNameIndex(cfr.readU2());
             fis[i].setDescriptorIndex(cfr.readU2());
-            // System.out.println("[access_flags: "+ fis[i].getAccessFlags().getValue() +"]");
-            // System.out.println("[name_index: "+ fis[i].getNameIndex().getValue() +"]");
-            // System.out.println("[descriptor_index: "+ fis[i].getDescriptorIndex().getValue() +"]");
             U2 att_length = cfr.readU2();
             fis[i].setAttributesCount(att_length);
-            // System.out.println("[attributes_count: "+ fis[i].getAttributesCount().getValue() +"]");
             AttributeInfo[] attributes = new AttributeInfo[att_length.getValue()];
             for (int j = 0; j < attributes.length; j++) {
                 U2 attribute_name_index = cfr.readU2();
                 ConstantInfo[] ci = cp.getConstantInfo();
-                //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
                 attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-                // System.out.println(attributes[j].getClass().getSimpleName());
-                //System.out.println(attributes[j]);
             }
+
+            fis[i].setAttributes(attributes);
         }
+
+        cf.setFields(fis);
     }
 
+    /**
+     * 读取方法数量
+     */
     private static void methodCount() {
     	U2 methodCount = cfr.readU2();
     	cf.setMethodsCount(methodCount);
-    	// System.out.println("[method_count: " + methodCount.getValue() + "]\n");
     }
 
+    /**
+     * 读取方法的具体信息
+     */
     private static void methods() {
     	int length = cf.getMethodsCount().getValue();
 
@@ -227,34 +223,30 @@ public class ClassFileParser {
             mis[i] = new MethodInfo();
         }
         for (int i = 0; i < length; i++) {
-            //去掉warning
-            System.out.println("---------");
+            if (true){
+                // todo 代码要进行重构
+            }
             mis[i].setAccessFlags(cfr.readU2());
             mis[i].setNameIndex(cfr.readU2());
             mis[i].setDescriptorIndex(cfr.readU2());
-            // System.out.println("[access_flags: "+ mis[i].getAccessFlags().getValue() +"]");
-            // System.out.println("[name_index: "+ mis[i].getNameIndex().getValue() +"]");
-            // System.out.println("[descriptor_index: "+ mis[i].getDescriptorIndex().getValue() +"]");
             U2 att_length = cfr.readU2();
             mis[i].setAttributesCount(att_length);
-            // System.out.println("[attributes_count: "+ mis[i].getAttributesCount().getValue() +"]");
             AttributeInfo[] attributes = new AttributeInfo[att_length.getValue()];
             for (int j = 0; j < attributes.length; j++) {
                 U2 attribute_name_index = cfr.readU2();
                 ConstantInfo[] ci = cp.getConstantInfo();
-                //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
                 attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-                // System.out.println(attributes[j].getClass().getSimpleName());
-                // System.out.println(attributes[j]);
-                //todo 读取code数据
+                //todo 读取code数据 这里可能需要对代码进行重构
             }
+            mis[i].setAttributes(attributes);
         }
+
+        cf.setMethods(mis);
     }
 
     private static void attributeCount() {
     	U2 attributes_count = cfr.readU2();
     	cf.setAttributesCount(attributes_count);
-    	// System.out.println("[attributes_count: " + attributes_count.getValue() + "]\n");
     }
 
     private static void attributes() {
@@ -262,12 +254,10 @@ public class ClassFileParser {
         for (int j = 0; j < attributes.length; j++) {
             U2 attribute_name_index = cfr.readU2();
             ConstantInfo[] ci = cp.getConstantInfo();
-            //System.out.println(((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString());
             attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-            // System.out.println(attributes[j].getClass().getSimpleName());
-            // System.out.println(attributes[j]);
-            //todo 读取code数据
+            //todo 属性嵌套？？？
         }
+        cf.setAttributes(attributes);
     }
 
     /**
