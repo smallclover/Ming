@@ -10,6 +10,7 @@ import com.ming.base.constant.ConstantMethodrefInfo;
 import com.ming.base.constant.ConstantNameAndTypeInfo;
 import com.ming.base.constant.ConstantStringInfo;
 import com.ming.base.constant.ConstantUtf8Info;
+import com.ming.core.ConstantPool;
 import com.ming.io.ClassFileReader;
 
 public class ConstantInfo {

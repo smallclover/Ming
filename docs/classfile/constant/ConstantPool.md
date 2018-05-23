@@ -2,7 +2,7 @@
 
 ## 常量池通用格式
 
-```java
+```cpp
 
 cp_info {
   u1 tag;

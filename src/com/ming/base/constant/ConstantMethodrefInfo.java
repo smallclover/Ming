@@ -14,6 +14,7 @@ public class ConstantMethodrefInfo extends ConstantInfo {
     private static final U1 tag = new U1(10);
     //指向声明方法的类描述符CONSTANT_Class_info的索引项
     private U2 class_index = null;
+
     //指向方法名称及类型描述符CONSTANT_NameAndType_info的索引项
     private U2 name_and_type_index = null;
 
@@ -28,4 +29,5 @@ public class ConstantMethodrefInfo extends ConstantInfo {
 				+ "[class_index]: " + class_index.getValue() + "\n"
 				+ "[name_and_type_index]: " + name_and_type_index.getValue() + "\n";
 	}
+
 }

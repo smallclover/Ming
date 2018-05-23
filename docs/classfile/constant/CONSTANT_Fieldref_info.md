@@ -6,7 +6,7 @@
 
 ## 结构
 
-```java
+```cpp
 CONSTANT_Fieldref_info {
    u1 tag;
    u2 class_index;

@@ -34,7 +34,10 @@ public class HelloWorld {
 
 ### 运行
 
-参考文件```java com.ming.test.Test.java```
+参考文件
+
++ ```java com.ming.print.PrintClassInfo.java``` 具体信息的输出
++ ```java com.ming.test.Test.java``` 调用PrintClassInfo#printAll() 打印所有信息
 
 
 ## 进展
@@ -102,6 +105,8 @@ attributes[attributes_count] | × | 90%
         + ClassFileReader.java
       - main
         + ClassFileParser.java
+      - print
+        + PrintClassInfo.java
       - test
         + Test.java
 + docs
@@ -110,6 +115,6 @@ attributes[attributes_count] | × | 90%
     + constant
       - CONSTANT_Class_info.md
       - CONSTANT_Fieldref_info.md
-    + attribure
+    + Attribute
 
 
