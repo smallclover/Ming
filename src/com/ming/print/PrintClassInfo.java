@@ -4,6 +4,10 @@ import com.ming.base.AttributeInfo;
 import com.ming.base.ConstantInfo;
 import com.ming.base.FieldInfo;
 import com.ming.base.MethodInfo;
+import com.ming.base.constant.ConstantClassInfo;
+import com.ming.base.constant.ConstantMethodrefInfo;
+import com.ming.base.constant.ConstantNameAndTypeInfo;
+import com.ming.base.constant.ConstantUtf8Info;
 import com.ming.core.ClassFile;
 import com.ming.core.U2;
 import com.ming.main.ClassFileParser;
@@ -11,15 +15,24 @@ import com.ming.main.ClassFileParser;
 
 public class PrintClassInfo {
 
-    public static void printAll() {
+    private static ClassFile cf;
+    private static ConstantInfo[] ci;
 
-        //class文件的绝对路径
-        String path = "C:\\Users\\smallclover\\Desktop\\Simple.class";
-
+    /**
+     * 初始化class文件路径
+     * @param filePath class文件路径
+     */
+    public static void init(String filePath) {
         //class文件实体类，可以通过该类来获得class文件的所有属性
         //具体可以获得属性可以参考ClassFile实体类
-        ClassFile cf = ClassFileParser.getClassFile(path);
+        cf = ClassFileParser.getClassFile(filePath);
+        ci = cf.getConstantPool().getConstantInfo();
+    }
 
+    /**
+     * 一次性打印出class文件的所有的信息
+     */
+    public static void printAll() {
         // 获取magic
         System.out.println("[magic]: " + cf.getMagic().toHex());
         // 获取次版本
@@ -31,15 +44,13 @@ public class PrintClassInfo {
 
         System.out.println("[constant_pool]: ");
 
-        // 获取常量池内容
-        ConstantInfo[] ci = cf.getConstantPool().getConstantInfo();
-
         for (int i = 1; i < ci.length; i++) {
             if (ci[i] == null) {
                 continue;// double 和long的情况会占用两个索引值n和n+1，而n+1是null
             }
             System.out.println("[" + i + "]: " + ci[i].getClass().getSimpleName());
-            System.out.println(ci[i]);
+            // 打印该常量项的信息
+            System.out.println(printByConstantTypeAndValue(ci[i], getValueByIndex(i)));
         }
 
         // 获取访问标志
@@ -115,4 +126,66 @@ public class PrintClassInfo {
             System.out.println(ai[i]);
         }
     }
+
+    /**
+     * 根据给定的索引获取常量项的最终值
+     */
+    private static String getValueByIndex(int index) {
+        String result = null;
+        if (ci[index] instanceof ConstantUtf8Info) {
+            result = ((ConstantUtf8Info)ci[index]).convertHexToString();
+        } else if (ci[index] instanceof ConstantClassInfo) {
+            int classNameIndex = ((ConstantClassInfo)ci[index]).getNameIndex().getValue();
+            result = getValueByIndex(classNameIndex);
+        } else if (ci[index] instanceof ConstantNameAndTypeInfo) {
+            int nameIndex = ((ConstantNameAndTypeInfo)ci[index]).getNameIndex().getValue();
+            String nameStr = getValueByIndex(nameIndex);
+            int descriptorIndex = ((ConstantNameAndTypeInfo)ci[index]).getDescriptorIndex().getValue();
+            String descriptorStr = getValueByIndex(descriptorIndex);
+            result = nameStr + "-" + descriptorStr;
+        } else if (ci[index] instanceof ConstantMethodrefInfo) {
+            int methodClassIndex = ((ConstantMethodrefInfo)ci[index]).getClassIndex().getValue();
+            String methodClassStr = getValueByIndex(methodClassIndex);
+            int methodDescriptorIndex = ((ConstantMethodrefInfo)ci[index]).getNameAndTypeIndex().getValue();
+            String methodDescriptorStr = getValueByIndex(methodDescriptorIndex);
+
+            result = methodClassStr + "-" + methodDescriptorStr;
+        }
+        return result;
+    }
+
+    /**
+     * 根据指定的常量值类型，打印相应的数据
+     * @param ci 常量值
+     * @param str 该常量值的索引指向的常量的值
+     * @return
+     */
+    private static String printByConstantTypeAndValue(ConstantInfo ci, String str) {
+        String format = null;
+        if (ci instanceof ConstantUtf8Info) {
+            ConstantUtf8Info info = (ConstantUtf8Info)ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[length]: " + info.getLength().getValue() + "\n"
+                    + "[bytes]: " + str + "\n";
+        } else if (ci instanceof ConstantClassInfo) {
+            ConstantClassInfo info = (ConstantClassInfo)ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[name_index]: " + info.getNameIndex().getValue() + "-" + str + "\n";
+        } else if (ci instanceof ConstantNameAndTypeInfo) {
+            ConstantNameAndTypeInfo info = (ConstantNameAndTypeInfo)ci;
+            String[] value = str.split("-");
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[name_index]: " + info.getNameIndex().getValue() + "-" + value[0] + "\n"
+                    + "[descriptor_index]: " + info.getDescriptorIndex().getValue() + "-" + value[1] + "\n";
+        } else if (ci instanceof ConstantMethodrefInfo) {
+            ConstantMethodrefInfo info = (ConstantMethodrefInfo) ci;
+            String[] value = str.split("-");
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[class_index]: " + info.getClassIndex().getValue() + "-" + value[0] + "\n"
+                    + "[name_and_type_index]: " + info.getNameAndTypeIndex().getValue() + "-" + value[1] + "-" + value[2] + "\n";
+        }
+
+        return format;
+    }
+
 }

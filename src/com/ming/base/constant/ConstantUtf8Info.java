@@ -55,6 +55,14 @@ public class ConstantUtf8Info extends ConstantInfo {
 		return sb.toString();
 	}
 
+	public U1 getTag() {
+		return tag;
+	}
+
+	public U2 getLength() {
+		return length;
+	}
+
 	@Override
 	public String toString() {
 		return "[tag]: " + tag.getValue() + "\n"

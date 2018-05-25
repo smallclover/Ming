@@ -25,4 +25,16 @@ public class ConstantNameAndTypeInfo extends ConstantInfo {
 				+ "[name_index]: " + name_index.getValue() + "\n"
 				+ "[descriptor_index]: " + descriptor_index.getValue() + "\n";
 	}
+
+    public U1 getTag() {
+        return tag;
+    }
+
+    public U2 getNameIndex() {
+        return name_index;
+    }
+
+    public U2 getDescriptorIndex() {
+        return descriptor_index;
+    }
 }

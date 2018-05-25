@@ -22,8 +22,7 @@ import com.ming.io.ClassFileReader;
 
 /**
  * @author smallclover
- * 读取示例Class文件，并将内容打印出来
- * 示例文件：Sample.java
+ * 解析class文件，然后将其赋值给ClassFile
  */
 public class ClassFileParser {
     private static InputStream is = null;
