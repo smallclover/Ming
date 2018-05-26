@@ -2,13 +2,12 @@
 
 ## 说明
 
-ConstantValue 属性是定长属性，位于 field_info结构的属性表中。
-ConstantValue 属性表示一个常量字段的值。在一个 field_info 结构的属性表中最多只能有
-一个 ConstantValue 属性。如果该字段为静态类型（即 field_info 结构的 access_flags
++ ConstantValue 属性位于 field_info结构的属性表中。
++ ConstantValue 属性表示一个常量字段的值。在一个 field_info 结构的属性表中最多只能有
+一个 ConstantValue 属性。
++ 如果该字段为静态类型（即 field_info 结构的 access_flags
 项设置了 ACC_STATIC 标志），则说明这个 field_info 结构表示的常量字段值将被
-分配为它的 ConstantValue 属性表示的值，这个过程也是类或接口申明的常量字段（Constant
-Field初始化的一部分。这个过程发生在引用类或接口的类初始化方法执
-行之前。
+分配为它的 ConstantValue 属性表示的值。
 
 ## 结构
 

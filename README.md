@@ -12,6 +12,8 @@ Class文件解析器
   - 完善了测试方法的输出信息，现在基本可以完整的展示整个class文件的信息
 + 0.1.2
   - 进一步优化输出的信息，现在可以在打印信息的时候直接显示出常量池索引所指向的常量
++ 0.1.3
+  - 现在可以打印出方法的操作码
 
 ## 已知可能存在的问题
 
@@ -71,7 +73,7 @@ methods[methods_count] | × | 90%
 attributes_count | √ | 100%
 attributes[attributes_count] | × | 90%
 
-## 目录说明（最后更新时间 2018/05/17）
+## 目录说明（最后更新时间 2018/05/26）
 
 + src
   - com
@@ -107,6 +109,7 @@ attributes[attributes_count] | × | 90%
         + ClassFile.java
         + ConstantPool.java
         + Modifier.java
+        + Opcode.java
         + U1.java
         + U2.java
         + U4.java

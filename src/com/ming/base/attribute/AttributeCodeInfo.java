@@ -3,10 +3,7 @@ package com.ming.base.attribute;
 import com.ming.base.AttributeInfo;
 import com.ming.base.ConstantInfo;
 import com.ming.base.constant.ConstantUtf8Info;
-import com.ming.core.ConstantPool;
-import com.ming.core.U1;
-import com.ming.core.U2;
-import com.ming.core.U4;
+import com.ming.core.*;
 import com.ming.io.ClassFileReader;
 
 /**
@@ -68,9 +65,8 @@ public class AttributeCodeInfo extends AttributeInfo {
     	for(int i = 0; i < ac; i ++) {
     		U2 inner_attribute_name_index = cfr.readU2();
             ConstantInfo[] ci = cp.getConstantInfo();
-            attributes[i] = AttributeInfo.getSpecificAttributeInfo(inner_attribute_name_index, ((ConstantUtf8Info)ci[inner_attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-            // System.out.println(attributes[i].getClass().getSimpleName());
-            // System.out.println(attributes[i]);
+            String name = ((ConstantUtf8Info)ci[inner_attribute_name_index.getValue()]).convertHexToString();
+            attributes[i] = AttributeInfo.getSpecificAttributeInfo(inner_attribute_name_index, name, cfr, cp);
     	}
 
     }
@@ -292,7 +288,8 @@ public class AttributeCodeInfo extends AttributeInfo {
 				+ "[code_length]: " + code_length.getValue() + "\n";
 		StringBuffer sb_code = new StringBuffer();
 		for(int i = 0; i < code.length; i ++) {
-			sb_code.append(code[i].getValue() + "\n");
+			String opCode = Opcode.getOpcode(code[i].getValue());
+			sb_code.append(code[i].getValue() + "-" + opCode + "\n");
 		}
 		String etl = "[exception_table_length]: " + exception_table_length.getValue() + "\n";
 		StringBuffer sb_exception_table = new StringBuffer();
