@@ -22,7 +22,7 @@ Class文件解析器
 + class文件使用的是MUTF-8的编码格式，与UTF-8有微妙的不同，在某些情况下可能错在无法解析的情况。
 + 有一些类型虽然声明了，但是还没有具体的添加内容，（才不是因为懒呢），如果碰到没有实装的类型，会报错，我会尽量今早将所有的类型进行实装。
 + 遇到没有实装类型的错误类型有两种
-  - 没有找到指定的属性类型：cant find specific attribute
+  - 没有找到指定的属性类型："can't find specific attribute"
   - 没有找到指定的常量类型："can't find specific type tag: \[该常量类型所对应的具体的数值]"
   
 ## 使用方法
@@ -238,8 +238,8 @@ public interface Child {
 [super_class]: 3
 [interfaces_count]: 2
 [interfaces]: 
-[0]: 4
-[1]: 5
+[0]: 4-Parent
+[1]: 5-Child
 
 [fields_count]: 4
 [fields]: 
@@ -391,6 +391,7 @@ attributes[attributes_count] | × | 90%
         + ConstantInfo.java
         + FieldInfo.java
         + MethodInfo.java
+        + InterfaceInfo.java
       - core
         + ClassFile.java
         + ConstantPool.java

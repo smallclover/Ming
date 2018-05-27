@@ -65,7 +65,9 @@ public class PrintClassInfo {
         U2[] interfaces = cf.getInterfaces();
         if (interfaces != null) {
             for (int i = 0; i < interfaces.length; i++) {
-                System.out.println("[" + i + "]: " + interfaces[i].getValue());
+                int nameIndex = interfaces[i].getValue();
+                String name = getValueByIndex(nameIndex);
+                System.out.println("[" + i + "]: " + nameIndex + "-" + name);
             }
         }
 
