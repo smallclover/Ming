@@ -15,10 +15,4 @@ public class ConstantFieldrefInfo extends ConstantInfo {
         name_and_type_index = cfr.readU2();
     }
 
-	@Override
-	public String toString() {
-		return "[tag]: " + tag.getValue() + "\n"
-				+ "[class_index]: " + class_index.getValue() + "\n"
-				+ "[name_and_type_index]: " + name_and_type_index.getValue() + "\n";
-	}
 }

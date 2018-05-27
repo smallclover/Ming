@@ -63,10 +63,4 @@ public class ConstantUtf8Info extends ConstantInfo {
 		return length;
 	}
 
-	@Override
-	public String toString() {
-		return "[tag]: " + tag.getValue() + "\n"
-				+ "[length]: " + length.getValue() + "\n"
-				+ "[bytes]: " + convertHexToString() + "\n";
-	}
 }

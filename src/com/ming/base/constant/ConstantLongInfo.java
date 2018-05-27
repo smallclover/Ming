@@ -19,8 +19,15 @@ public class ConstantLongInfo extends ConstantInfo{
         low_bytes = cfr.readU4();
     }
 
-    @Override
-    public String toString() {
-        return "[value]: " + high_bytes.toHex() + low_bytes.toHex() + "\n";
+    public U1 getTag() {
+        return tag;
+    }
+
+    public U4 getHighBytes() {
+        return high_bytes;
+    }
+
+    public U4 getLowBytes() {
+        return low_bytes;
     }
 }

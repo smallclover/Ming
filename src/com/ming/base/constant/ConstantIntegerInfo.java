@@ -17,10 +17,4 @@ public class ConstantIntegerInfo extends ConstantInfo {
 	public ConstantIntegerInfo(ClassFileReader cfr) {
 		value = cfr.readU4();
 	}
-
-    @Override
-    public String toString() {
-        return "[value]: " + value.toHex() + "\n";
-    }
-	//todo
 }

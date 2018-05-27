@@ -22,4 +22,8 @@ public class ConstantStringInfo extends ConstantInfo {
 		return "[tag]: " + tag.getValue() + "\n"
 				+ "[string_index]: " + string_index.getValue() + "\n";
 	}
+
+	public U1 getTag() {
+        return tag;
+    }
 }

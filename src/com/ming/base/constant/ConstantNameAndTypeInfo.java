@@ -19,12 +19,6 @@ public class ConstantNameAndTypeInfo extends ConstantInfo {
         this.descriptor_index = cfr.readU2();
     }
 
-	@Override
-	public String toString() {
-		return "[tag]: " + tag.getValue() + "\n"
-				+ "[name_index]: " + name_index.getValue() + "\n"
-				+ "[descriptor_index]: " + descriptor_index.getValue() + "\n";
-	}
 
     public U1 getTag() {
         return tag;

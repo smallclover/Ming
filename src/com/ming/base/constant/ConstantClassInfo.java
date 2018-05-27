@@ -27,10 +27,4 @@ public class ConstantClassInfo extends ConstantInfo {
 	public U1 getTag() {
 		return tag;
 	}
-
-	@Override
-	public String toString() {
-		return "[tag]: " + tag.getValue() + "\n"
-				+ "[name_index]: " + name_index.getValue() + "\n";
-	}
 }

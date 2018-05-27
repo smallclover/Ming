@@ -13,8 +13,4 @@ public class ConstantFloatInfo extends ConstantInfo{
 		value = cfr.readU4();
 	}
 
-    @Override
-    public String toString() {
-        return "[value]: " + value.toHex() + "\n";
-    }
 }

@@ -4,10 +4,7 @@ import com.ming.base.AttributeInfo;
 import com.ming.base.ConstantInfo;
 import com.ming.base.FieldInfo;
 import com.ming.base.MethodInfo;
-import com.ming.base.constant.ConstantClassInfo;
-import com.ming.base.constant.ConstantMethodrefInfo;
-import com.ming.base.constant.ConstantNameAndTypeInfo;
-import com.ming.base.constant.ConstantUtf8Info;
+import com.ming.base.constant.*;
 import com.ming.core.ClassFile;
 import com.ming.core.U2;
 import com.ming.main.ClassFileParser;
@@ -138,11 +135,14 @@ public class PrintClassInfo {
             int classNameIndex = ((ConstantClassInfo)ci[index]).getNameIndex().getValue();
             result = getValueByIndex(classNameIndex);
         } else if (ci[index] instanceof ConstantNameAndTypeInfo) {
-            int nameIndex = ((ConstantNameAndTypeInfo)ci[index]).getNameIndex().getValue();
+            int nameIndex = ((ConstantNameAndTypeInfo) ci[index]).getNameIndex().getValue();
             String nameStr = getValueByIndex(nameIndex);
-            int descriptorIndex = ((ConstantNameAndTypeInfo)ci[index]).getDescriptorIndex().getValue();
+            int descriptorIndex = ((ConstantNameAndTypeInfo) ci[index]).getDescriptorIndex().getValue();
             String descriptorStr = getValueByIndex(descriptorIndex);
             result = nameStr + "-" + descriptorStr;
+        } else if (ci[index] instanceof ConstantStringInfo) {
+            int stringIndex = ((ConstantStringInfo)ci[index]).getStringIndex().getValue();
+            result = getValueByIndex(stringIndex);
         } else if (ci[index] instanceof ConstantMethodrefInfo) {
             int methodClassIndex = ((ConstantMethodrefInfo)ci[index]).getClassIndex().getValue();
             String methodClassStr = getValueByIndex(methodClassIndex);
@@ -177,12 +177,24 @@ public class PrintClassInfo {
             format = "[tag]: " + info.getTag().getValue() + "\n"
                     + "[name_index]: " + info.getNameIndex().getValue() + "-" + value[0] + "\n"
                     + "[descriptor_index]: " + info.getDescriptorIndex().getValue() + "-" + value[1] + "\n";
+        } else if (ci instanceof ConstantStringInfo) {
+            ConstantStringInfo info = (ConstantStringInfo)ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[string_index]: " + info.getStringIndex().getValue() + "-" + str + "\n";
         } else if (ci instanceof ConstantMethodrefInfo) {
-            ConstantMethodrefInfo info = (ConstantMethodrefInfo) ci;
+            ConstantMethodrefInfo info = (ConstantMethodrefInfo)ci;
             String[] value = str.split("-");
             format = "[tag]: " + info.getTag().getValue() + "\n"
                     + "[class_index]: " + info.getClassIndex().getValue() + "-" + value[0] + "\n"
                     + "[name_and_type_index]: " + info.getNameAndTypeIndex().getValue() + "-" + value[1] + "-" + value[2] + "\n";
+        } else if (ci instanceof ConstantLongInfo) {
+            ConstantLongInfo info = (ConstantLongInfo)ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[value]: " + info.getHighBytes().toHex() + info.getLowBytes().toHex() + "\n";
+        } else if (ci instanceof ConstantDoubleInfo) {
+            ConstantDoubleInfo info = (ConstantDoubleInfo)ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[value]: " + info.getHighBytes().toHex() + info.getLowBytes().toHex() + "\n";
         }
 
         return format;

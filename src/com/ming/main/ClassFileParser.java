@@ -191,12 +191,7 @@ public class ClassFileParser {
             U2 att_length = cfr.readU2();
             fis[i].setAttributesCount(att_length);
             AttributeInfo[] attributes = new AttributeInfo[att_length.getValue()];
-            for (int j = 0; j < attributes.length; j++) {
-                U2 attribute_name_index = cfr.readU2();
-                ConstantInfo[] ci = cp.getConstantInfo();
-                attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-            }
-
+            getAttributes(attributes);
             fis[i].setAttributes(attributes);
         }
 
@@ -231,12 +226,7 @@ public class ClassFileParser {
             U2 att_length = cfr.readU2();
             mis[i].setAttributesCount(att_length);
             AttributeInfo[] attributes = new AttributeInfo[att_length.getValue()];
-            for (int j = 0; j < attributes.length; j++) {
-                U2 attribute_name_index = cfr.readU2();
-                ConstantInfo[] ci = cp.getConstantInfo();
-                attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
-                //todo 读取code数据 这里可能需要对代码进行重构
-            }
+            getAttributes(attributes);
             mis[i].setAttributes(attributes);
         }
 
@@ -250,13 +240,25 @@ public class ClassFileParser {
 
     private static void attributes() {
         AttributeInfo[] attributes = new AttributeInfo[cf.getAttributesCount().getValue()];
+        getAttributes(attributes);
+        cf.setAttributes(attributes);
+    }
+
+    /**
+     * 属性有三种情况
+     * 1.fields下的属性
+     * 2.methods下的属性
+     * 3.attributes下的属性（类属性）
+     * @param attributes
+     */
+    private static void getAttributes(AttributeInfo[] attributes) {
         for (int j = 0; j < attributes.length; j++) {
             U2 attribute_name_index = cfr.readU2();
             ConstantInfo[] ci = cp.getConstantInfo();
-            attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString(), cfr, cp);
+            String name = ((ConstantUtf8Info)ci[attribute_name_index.getValue()]).convertHexToString();
+            attributes[j] = AttributeInfo.getSpecificAttributeInfo(attribute_name_index, name, cfr, cp);
             //todo 属性嵌套？？？
         }
-        cf.setAttributes(attributes);
     }
 
     /**
