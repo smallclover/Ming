@@ -235,7 +235,7 @@ public interface Child {
 [length]: 10
 [bytes]: HelloWorld
 
-[access_flags]: 33
+[access_flags]: 33-public super 
 [this_class]: 2
 [super_class]: 3
 [interfaces_count]: 2
@@ -247,15 +247,15 @@ public interface Child {
 [fields]: 
 
 [field 1 ]: 
-[access_flags]: 2
-[name_index]: 6
-[descriptor_index]: 7
+[access_flags]: 2-private 
+[name_index]: 6-data
+[descriptor_index]: 7-I
 [attributes_count]: 0
 
 [field 2 ]: 
-[access_flags]: 26
-[name_index]: 8
-[descriptor_index]: 9
+[access_flags]: 26-private final static 
+[name_index]: 8-flag
+[descriptor_index]: 9-Ljava/lang/String;
 [attributes_count]: 1
 
 [1]: AttributeConstantValueInfo
@@ -264,9 +264,9 @@ public interface Child {
 [constantvalue_index]: 11
 
 [field 3 ]: 
-[access_flags]: 26
-[name_index]: 12
-[descriptor_index]: 13
+[access_flags]: 26-private final static 
+[name_index]: 12-num
+[descriptor_index]: 13-J
 [attributes_count]: 1
 
 [1]: AttributeConstantValueInfo
@@ -275,9 +275,9 @@ public interface Child {
 [constantvalue_index]: 14
 
 [field 4 ]: 
-[access_flags]: 26
-[name_index]: 16
-[descriptor_index]: 17
+[access_flags]: 26-private final static 
+[name_index]: 16-dou
+[descriptor_index]: 17-D
 [attributes_count]: 1
 
 [1]: AttributeConstantValueInfo
@@ -290,9 +290,9 @@ public interface Child {
 [methods]: 
 
 [method 1 ]: 
-[access_flags]: 1
-[name_index]: 20
-[descriptor_index]: 21
+[access_flags]: 1-public 
+[name_index]: 20-<init>
+[descriptor_index]: 21-()V
 [attributes_count]: 1
 
 [1]: AttributeCodeInfo
@@ -310,9 +310,9 @@ public interface Child {
 [attributes_count]: 1
 
 [method 2 ]: 
-[access_flags]: 1
-[name_index]: 24
-[descriptor_index]: 25
+[access_flags]: 1-public 
+[name_index]: 24-add
+[descriptor_index]: 25-(II)I
 [attributes_count]: 1
 
 [1]: AttributeCodeInfo
