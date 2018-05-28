@@ -6,6 +6,7 @@ import com.ming.base.FieldInfo;
 import com.ming.base.MethodInfo;
 import com.ming.base.constant.*;
 import com.ming.core.ClassFile;
+import com.ming.core.Modifier;
 import com.ming.core.U2;
 import com.ming.main.ClassFileParser;
 
@@ -51,7 +52,8 @@ public class PrintClassInfo {
         }
 
         // 获取访问标志
-        System.out.println("[access_flags]: " + cf.getAccessFlags().getValue());
+        int accessFlags_class = cf.getAccessFlags().getValue();
+        System.out.println("[access_flags]: " + accessFlags_class + "-" + Modifier.getModifier().getAccessFlag(accessFlags_class));
         // 获取该类
         System.out.println("[this_class]: " + cf.getThisClass().getValue());
         // 获取父类
@@ -80,9 +82,12 @@ public class PrintClassInfo {
         FieldInfo[] fi =  cf.getFields();
         for (int i = 0; i < fi.length; i++) {
             System.out.println("[field " + (i + 1) + " ]: ");
-            System.out.println("[access_flags]: " + fi[i].getAccessFlags().getValue());
-            System.out.println("[name_index]: " + fi[i].getNameIndex().getValue());
-            System.out.println("[descriptor_index]: " + fi[i].getDescriptorIndex().getValue());
+            int accessflags_field = fi[i].getAccessFlags().getValue();
+            System.out.println("[access_flags]: " + accessflags_field + "-" + Modifier.getModifier().getAccessFlag(accessflags_field));
+            int nameIndex = fi[i].getNameIndex().getValue();
+            System.out.println("[name_index]: " + nameIndex + "-" + getValueByIndex(nameIndex));
+            int descriptorIndex = fi[i].getDescriptorIndex().getValue();
+            System.out.println("[descriptor_index]: " + descriptorIndex + "-" + getValueByIndex(descriptorIndex));
             System.out.println("[attributes_count]: " + fi[i].getAttributesCount().getValue() + "\n");
             AttributeInfo[] ai = fi[i].getAttributes();
             for (int j = 0; j < ai.length; j++) {
@@ -100,9 +105,12 @@ public class PrintClassInfo {
         MethodInfo[] mi = cf.getMethods();
         for (int i = 0; i < mi.length; i++) {
             System.out.println("[method " + (i + 1) + " ]: ");
-            System.out.println("[access_flags]: " + mi[i].getAccessFlags().getValue());
-            System.out.println("[name_index]: " + mi[i].getNameIndex().getValue());
-            System.out.println("[descriptor_index]: " + mi[i].getDescriptorIndex().getValue());
+            int accessflags_method = mi[i].getAccessFlags().getValue();
+            System.out.println("[access_flags]: " + accessflags_method + "-" + Modifier.getModifier().getAccessFlag(accessflags_method));
+            int nameIndex = mi[i].getNameIndex().getValue();
+            System.out.println("[name_index]: " + nameIndex + "-" + getValueByIndex(nameIndex));
+            int descriptorIndex = mi[i].getDescriptorIndex().getValue();
+            System.out.println("[descriptor_index]: " + descriptorIndex + "-" + getValueByIndex(descriptorIndex));
             System.out.println("[attributes_count]: " + mi[i].getAttributesCount().getValue() + "\n");
 
             // todo 类似code属性之下还有其他的属性，也需要列举出来

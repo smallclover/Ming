@@ -1,11 +1,9 @@
 package com.ming.core;
 
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  *
- * @author smallclover
+ * @author smallcloverc
  * 2 byte unsigned integer
  */
 public class U2 {
