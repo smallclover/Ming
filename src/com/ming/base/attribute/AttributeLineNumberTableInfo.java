@@ -31,7 +31,7 @@ public class AttributeLineNumberTableInfo extends AttributeInfo {
 
 
 
-	public U2 getLine_numberTableLength() {
+	public U2 getLineNumberTableLength() {
 		return line_number_table_length;
 	}
 
@@ -56,7 +56,7 @@ public class AttributeLineNumberTableInfo extends AttributeInfo {
 
 
 
-	private class LineNumberTable {
+	public class LineNumberTable {
 		private U2 start_pc;
 		private U2 line_number;
 

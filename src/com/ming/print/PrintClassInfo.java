@@ -4,11 +4,13 @@ import com.ming.base.AttributeInfo;
 import com.ming.base.ConstantInfo;
 import com.ming.base.FieldInfo;
 import com.ming.base.MethodInfo;
+import com.ming.base.attribute.*;
 import com.ming.base.constant.*;
 import com.ming.core.ClassFile;
 import com.ming.core.Modifier;
 import com.ming.core.U2;
 import com.ming.main.ClassFileParser;
+import com.ming.util.PrintFormatUtils;
 
 
 public class PrintClassInfo {
@@ -18,6 +20,7 @@ public class PrintClassInfo {
 
     /**
      * 初始化class文件路径
+     *
      * @param filePath class文件路径
      */
     public static void init(String filePath) {
@@ -48,7 +51,7 @@ public class PrintClassInfo {
             }
             System.out.println("[" + i + "]: " + ci[i].getClass().getSimpleName());
             // 打印该常量项的信息
-            System.out.println(printByConstantTypeAndValue(ci[i], getValueByIndex(i)));
+            System.out.println(PrintFormatUtils.printConstant(ci[i], getConstantValueByIndex(i)));
         }
 
         // 获取访问标志
@@ -68,31 +71,32 @@ public class PrintClassInfo {
         if (interfaces != null) {
             for (int i = 0; i < interfaces.length; i++) {
                 int nameIndex = interfaces[i].getValue();
-                String name = getValueByIndex(nameIndex);
+                String name = getConstantValueByIndex(nameIndex);
                 System.out.println("[" + i + "]: " + nameIndex + "-" + name);
             }
         }
 
         System.out.println();
 
-        // 获取属性数量
+        // 获取字段数量
         System.out.println("[fields_count]: " + cf.getFieldsCount().getValue());
-        // 获取属性详细信息
+        // 获取字段详细信息
         System.out.println("[fields]: \n");
-        FieldInfo[] fi =  cf.getFields();
+        FieldInfo[] fi = cf.getFields();
         for (int i = 0; i < fi.length; i++) {
             System.out.println("[field " + (i + 1) + " ]: ");
             int accessflags_field = fi[i].getAccessFlags().getValue();
             System.out.println("[access_flags]: " + accessflags_field + "-" + Modifier.getModifier().getAccessFlag(accessflags_field));
             int nameIndex = fi[i].getNameIndex().getValue();
-            System.out.println("[name_index]: " + nameIndex + "-" + getValueByIndex(nameIndex));
+            System.out.println("[name_index]: " + nameIndex + "-" + getConstantValueByIndex(nameIndex));
             int descriptorIndex = fi[i].getDescriptorIndex().getValue();
-            System.out.println("[descriptor_index]: " + descriptorIndex + "-" + getValueByIndex(descriptorIndex));
+            System.out.println("[descriptor_index]: " + descriptorIndex + "-" + getConstantValueByIndex(descriptorIndex));
             System.out.println("[attributes_count]: " + fi[i].getAttributesCount().getValue() + "\n");
             AttributeInfo[] ai = fi[i].getAttributes();
             for (int j = 0; j < ai.length; j++) {
                 System.out.println("[" + (j + 1) + "]: " + ai[j].getClass().getSimpleName());
-                System.out.println(ai[j]);
+                //System.out.println(ai[j]);
+                System.out.println(PrintFormatUtils.printAttribute(ai[j], getAttributeValue(ai[j])));
             }
         }
 
@@ -108,16 +112,17 @@ public class PrintClassInfo {
             int accessflags_method = mi[i].getAccessFlags().getValue();
             System.out.println("[access_flags]: " + accessflags_method + "-" + Modifier.getModifier().getAccessFlag(accessflags_method));
             int nameIndex = mi[i].getNameIndex().getValue();
-            System.out.println("[name_index]: " + nameIndex + "-" + getValueByIndex(nameIndex));
+            System.out.println("[name_index]: " + nameIndex + "-" + getConstantValueByIndex(nameIndex));
             int descriptorIndex = mi[i].getDescriptorIndex().getValue();
-            System.out.println("[descriptor_index]: " + descriptorIndex + "-" + getValueByIndex(descriptorIndex));
+            System.out.println("[descriptor_index]: " + descriptorIndex + "-" + getConstantValueByIndex(descriptorIndex));
             System.out.println("[attributes_count]: " + mi[i].getAttributesCount().getValue() + "\n");
 
             // todo 类似code属性之下还有其他的属性，也需要列举出来
             AttributeInfo[] ai = mi[i].getAttributes();
             for (int j = 0; j < ai.length; j++) {
                 System.out.println("[" + (j + 1) + "]: " + ai[j].getClass().getSimpleName());
-                System.out.println(ai[j]);
+                //System.out.println(ai[j]);
+                System.out.println(PrintFormatUtils.printAttribute(ai[j], getAttributeValue(ai[j])));
             }
         }
 
@@ -130,84 +135,97 @@ public class PrintClassInfo {
         AttributeInfo[] ai = cf.getAttributes();
         for (int i = 0; i < ai.length; i++) {
             System.out.println("[" + i + "]: " + ai[i].getClass().getSimpleName());
-            System.out.println(ai[i]);
+            //System.out.println(ai[i]);
+            System.out.println(PrintFormatUtils.printAttribute(ai[i], getAttributeValue(ai[i])));
         }
     }
 
     /**
      * 根据给定的索引获取常量项的最终值
      */
-    private static String getValueByIndex(int index) {
+    private static String getConstantValueByIndex(int index) {
         String result = null;
         if (ci[index] instanceof ConstantUtf8Info) {
-            result = ((ConstantUtf8Info)ci[index]).convertHexToString();
+            result = ((ConstantUtf8Info) ci[index]).convertHexToString();
         } else if (ci[index] instanceof ConstantClassInfo) {
-            int classNameIndex = ((ConstantClassInfo)ci[index]).getNameIndex().getValue();
-            result = getValueByIndex(classNameIndex);
+            int classNameIndex = ((ConstantClassInfo) ci[index]).getNameIndex().getValue();
+            result = getConstantValueByIndex(classNameIndex);
         } else if (ci[index] instanceof ConstantNameAndTypeInfo) {
             int nameIndex = ((ConstantNameAndTypeInfo) ci[index]).getNameIndex().getValue();
-            String nameStr = getValueByIndex(nameIndex);
+            String nameStr = getConstantValueByIndex(nameIndex);
             int descriptorIndex = ((ConstantNameAndTypeInfo) ci[index]).getDescriptorIndex().getValue();
-            String descriptorStr = getValueByIndex(descriptorIndex);
+            String descriptorStr = getConstantValueByIndex(descriptorIndex);
             result = nameStr + "-" + descriptorStr;
         } else if (ci[index] instanceof ConstantStringInfo) {
-            int stringIndex = ((ConstantStringInfo)ci[index]).getStringIndex().getValue();
-            result = getValueByIndex(stringIndex);
+            int stringIndex = ((ConstantStringInfo) ci[index]).getStringIndex().getValue();
+            result = getConstantValueByIndex(stringIndex);
         } else if (ci[index] instanceof ConstantMethodrefInfo) {
-            int methodClassIndex = ((ConstantMethodrefInfo)ci[index]).getClassIndex().getValue();
-            String methodClassStr = getValueByIndex(methodClassIndex);
-            int methodDescriptorIndex = ((ConstantMethodrefInfo)ci[index]).getNameAndTypeIndex().getValue();
-            String methodDescriptorStr = getValueByIndex(methodDescriptorIndex);
+            int methodClassIndex = ((ConstantMethodrefInfo) ci[index]).getClassIndex().getValue();
+            String methodClassStr = getConstantValueByIndex(methodClassIndex);
+            int methodDescriptorIndex = ((ConstantMethodrefInfo) ci[index]).getNameAndTypeIndex().getValue();
+            String methodDescriptorStr = getConstantValueByIndex(methodDescriptorIndex);
 
             result = methodClassStr + "-" + methodDescriptorStr;
         }
         return result;
     }
 
-    /**
-     * 根据指定的常量值类型，打印相应的数据
-     * @param ci 常量值
-     * @param str 该常量值的索引指向的常量的值
-     * @return
-     */
-    private static String printByConstantTypeAndValue(ConstantInfo ci, String str) {
-        String format = null;
-        if (ci instanceof ConstantUtf8Info) {
-            ConstantUtf8Info info = (ConstantUtf8Info)ci;
-            format = "[tag]: " + info.getTag().getValue() + "\n"
-                    + "[length]: " + info.getLength().getValue() + "\n"
-                    + "[bytes]: " + str + "\n";
-        } else if (ci instanceof ConstantClassInfo) {
-            ConstantClassInfo info = (ConstantClassInfo)ci;
-            format = "[tag]: " + info.getTag().getValue() + "\n"
-                    + "[name_index]: " + info.getNameIndex().getValue() + "-" + str + "\n";
-        } else if (ci instanceof ConstantNameAndTypeInfo) {
-            ConstantNameAndTypeInfo info = (ConstantNameAndTypeInfo)ci;
-            String[] value = str.split("-");
-            format = "[tag]: " + info.getTag().getValue() + "\n"
-                    + "[name_index]: " + info.getNameIndex().getValue() + "-" + value[0] + "\n"
-                    + "[descriptor_index]: " + info.getDescriptorIndex().getValue() + "-" + value[1] + "\n";
-        } else if (ci instanceof ConstantStringInfo) {
-            ConstantStringInfo info = (ConstantStringInfo)ci;
-            format = "[tag]: " + info.getTag().getValue() + "\n"
-                    + "[string_index]: " + info.getStringIndex().getValue() + "-" + str + "\n";
-        } else if (ci instanceof ConstantMethodrefInfo) {
-            ConstantMethodrefInfo info = (ConstantMethodrefInfo)ci;
-            String[] value = str.split("-");
-            format = "[tag]: " + info.getTag().getValue() + "\n"
-                    + "[class_index]: " + info.getClassIndex().getValue() + "-" + value[0] + "\n"
-                    + "[name_and_type_index]: " + info.getNameAndTypeIndex().getValue() + "-" + value[1] + "-" + value[2] + "\n";
-        } else if (ci instanceof ConstantLongInfo) {
-            ConstantLongInfo info = (ConstantLongInfo)ci;
-            format = "[tag]: " + info.getTag().getValue() + "\n"
-                    + "[value]: " + info.getHighBytes().toHex() + info.getLowBytes().toHex() + "\n";
-        } else if (ci instanceof ConstantDoubleInfo) {
-            ConstantDoubleInfo info = (ConstantDoubleInfo)ci;
-            format = "[tag]: " + info.getTag().getValue() + "\n"
-                    + "[value]: " + info.getHighBytes().toHex() + info.getLowBytes().toHex() + "\n";
+
+
+
+    public static String  getAttributeValue(AttributeInfo ai) {
+        String result = null;
+        if (ai instanceof AttributeConstantValueInfo) {
+            AttributeConstantValueInfo acvi = (AttributeConstantValueInfo) ai;
+            int name_index = acvi.getAttributeNameIndex().getValue();
+            String name = getConstantValueByIndex(name_index);
+            int att_constantvalue_index =  acvi.getConstantValueIndex().getValue();
+            String attConstantValue = getConstantValueByIndex(att_constantvalue_index);
+
+            result = name + "-" + attConstantValue;
+        } else if (ai instanceof AttributeLineNumberTableInfo) {
+            AttributeLineNumberTableInfo alnti = (AttributeLineNumberTableInfo) ai;
+            int attribute_name_index = alnti.getAttributeNameIndex().getValue();
+            String attributeName = getConstantValueByIndex(attribute_name_index);
+            result = attributeName;
+        } else if (ai instanceof AttributeLocalVariableTableInfo) {
+            AttributeLocalVariableTableInfo alvti = (AttributeLocalVariableTableInfo) ai;
+            int attribute_name_index = alvti.getAttributeNameIndex().getValue();
+            String attributeName = getConstantValueByIndex(attribute_name_index);
+            AttributeLocalVariableTableInfo.LocalVariableTable[] lvt = alvti.getTable();
+            String table = null;
+            for (int i = 0; i < lvt.length; i++) {
+                int descriptor_index = lvt[i].getDescriptorIndex().getValue();
+                String descriptor = getConstantValueByIndex(descriptor_index);
+                int name_index = lvt[i].getNameIndex().getValue();
+                String name = getConstantValueByIndex(name_index);
+                if (i == (lvt.length - 1)) {
+                    table = name + "+" + descriptor;
+                } else {
+                    table = name + "+" + descriptor + ")";
+                }
+            }
+            result = attributeName + "-" + table;
+        } else if (ai instanceof AttributeSourceFileInfo) {
+            AttributeSourceFileInfo asfi = (AttributeSourceFileInfo) ai;
+            int attribute_name_index = asfi.getAttributeNameIndex().getValue();
+            String attributeName = getConstantValueByIndex(attribute_name_index);
+            int source_file_index = asfi.getSourcefileIndex().getValue();
+            String sourceFile = getConstantValueByIndex(source_file_index);
+            result = attributeName + "-" + sourceFile;
+        } else if (ai instanceof AttributeCodeInfo) {
+            AttributeCodeInfo aci = (AttributeCodeInfo) ai;
+            int attribute_name_index = aci.getAttributeNameIndex().getValue();
+            String attributeName = getConstantValueByIndex(attribute_name_index);
+            AttributeInfo[] ai_2 = aci.getAttributes();
+            String othersAttributeResult = null;
+            for (int i = 0; i < ai_2.length; i++) {
+                 othersAttributeResult = getAttributeValue(ai_2[i]);
+            }
+            result = attributeName + "-" + othersAttributeResult;
         }
 
-        return format;
+        return result;
     }
 
 }

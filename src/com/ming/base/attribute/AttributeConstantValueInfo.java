@@ -18,36 +18,17 @@ public class AttributeConstantValueInfo extends AttributeInfo{
 		constantvalue_index = cfr.readU2();
 	}
 
-/*	@Override
-	public void read(ClassFileReader cfr) {
-		attribute_name_index = cfr.readU2();
-		attribute_length = cfr.readU4();
-		constantvalue_index = cfr.readU2();
-
-	}*/
 
 	public U2 getAttributeNameIndex() {
 		return attribute_name_index;
-	}
-
-	public void setAttributeNameIndex(U2 attribute_name_index) {
-		this.attribute_name_index = attribute_name_index;
 	}
 
 	public U4 getAttributeLength() {
 		return attribute_length;
 	}
 
-	public void setAttributeLength(U4 attribute_length) {
-		this.attribute_length = attribute_length;
-	}
-
-	public U2 getConstantvalueIndex() {
+	public U2 getConstantValueIndex() {
 		return constantvalue_index;
-	}
-
-	public void setConstantvalueIndex(U2 constantvalue_index) {
-		this.constantvalue_index = constantvalue_index;
 	}
 
 	@Override

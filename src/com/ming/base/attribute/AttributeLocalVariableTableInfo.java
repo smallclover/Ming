@@ -45,7 +45,7 @@ public class AttributeLocalVariableTableInfo extends AttributeInfo{
 
 
 
-	public U2 getLine_variableTableLength() {
+	public U2 getLineVariableTableLength() {
 		return line_variable_table_length;
 	}
 
@@ -58,7 +58,7 @@ public class AttributeLocalVariableTableInfo extends AttributeInfo{
 
 
 
-	private class LocalVariableTable {
+	public class LocalVariableTable {
 		private U2 start_pc;
 		private U2 length;
 		private U2 name_index;

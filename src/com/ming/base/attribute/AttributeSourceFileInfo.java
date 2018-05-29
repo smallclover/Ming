@@ -16,6 +16,18 @@ public class AttributeSourceFileInfo extends AttributeInfo{
 		sourcefile_index = cfr.readU2();
 	}
 
+	public U2 getAttributeNameIndex() {
+		return attribute_name_index;
+	}
+
+	public U4 getAttributeLength() {
+		return attribute_length;
+	}
+
+	public U2 getSourcefileIndex() {
+		return sourcefile_index;
+	}
+
 	@Override
 	public String toString() {
 		return "[attribute_name_index]: " + attribute_name_index.getValue() + "\n"
