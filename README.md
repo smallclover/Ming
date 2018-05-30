@@ -38,6 +38,8 @@ Simple.java
 
 ```java
 
+package com.ming.test;
+
 public class Simple implements Parent, Child{
     private int data;
 	private static final String flag= "HelloWorld";
@@ -46,6 +48,12 @@ public class Simple implements Parent, Child{
     public int add(int a, int b) {
       return a + b;
     }
+	
+	public void messger() {
+		int c = 0;
+		int d = 2;
+		System.out.println(c + d);
+	}
 }
 
 ```
@@ -53,16 +61,17 @@ public class Simple implements Parent, Child{
 Parent.java
 
 ```java
+package com.ming.test;
 
 public interface Parent {
 
 }
-
 ```
 
 Child.java
 
 ```java
+package com.ming.test;
 
 public interface Child {
 
@@ -84,258 +93,470 @@ public interface Child {
 
 [magic]: cafebabe
 [minor_version]: 0
-[major_version]: 52
-[constant_pool_count]: 34
+[major_version]: 54
+[constant_pool_count]: 54
 [constant_pool]: 
 [1]: ConstantMethodrefInfo
 [tag]: 10
-[class_index]: 3-java/lang/Object
-[name_and_type_index]: 28-<init>-()V
+[class_index]: 5-java/lang/Object
+[name_and_type_index]: 38-<init>-()V
 
-[2]: ConstantClassInfo
-[tag]: 7
-[name_index]: 29-Simple
-
-[3]: ConstantClassInfo
-[tag]: 7
-[name_index]: 30-java/lang/Object
+[2]: ConstantFieldrefInfo
+null
+[3]: ConstantMethodrefInfo
+[tag]: 10
+[class_index]: 41-java/io/PrintStream
+[name_and_type_index]: 42-println-(I)V
 
 [4]: ConstantClassInfo
 [tag]: 7
-[name_index]: 31-Parent
+[name_index]: 43-com/ming/test/Simple
 
 [5]: ConstantClassInfo
 [tag]: 7
-[name_index]: 32-Child
+[name_index]: 44-java/lang/Object
 
-[6]: ConstantUtf8Info
-[tag]: 1
-[length]: 4
-[bytes]: data
+[6]: ConstantClassInfo
+[tag]: 7
+[name_index]: 45-com/ming/test/Parent
 
-[7]: ConstantUtf8Info
-[tag]: 1
-[length]: 1
-[bytes]: I
+[7]: ConstantClassInfo
+[tag]: 7
+[name_index]: 46-com/ming/test/Child
 
 [8]: ConstantUtf8Info
 [tag]: 1
 [length]: 4
-[bytes]: flag
+[bytes]: data
 
 [9]: ConstantUtf8Info
+[tag]: 1
+[length]: 1
+[bytes]: I
+
+[10]: ConstantUtf8Info
+[tag]: 1
+[length]: 4
+[bytes]: flag
+
+[11]: ConstantUtf8Info
 [tag]: 1
 [length]: 18
 [bytes]: Ljava/lang/String;
 
-[10]: ConstantUtf8Info
+[12]: ConstantUtf8Info
 [tag]: 1
 [length]: 13
 [bytes]: ConstantValue
 
-[11]: ConstantStringInfo
+[13]: ConstantStringInfo
 [tag]: 8
-[string_index]: 33-HelloWorld
+[string_index]: 47-HelloWorld
 
-[12]: ConstantUtf8Info
+[14]: ConstantUtf8Info
 [tag]: 1
 [length]: 3
 [bytes]: num
 
-[13]: ConstantUtf8Info
+[15]: ConstantUtf8Info
 [tag]: 1
 [length]: 1
 [bytes]: J
 
-[14]: ConstantLongInfo
+[16]: ConstantLongInfo
 [tag]: 5
 [value]: 01
 
-[16]: ConstantUtf8Info
+[18]: ConstantUtf8Info
 [tag]: 1
 [length]: 3
 [bytes]: dou
 
-[17]: ConstantUtf8Info
+[19]: ConstantUtf8Info
 [tag]: 1
 [length]: 1
 [bytes]: D
 
-[18]: ConstantDoubleInfo
+[20]: ConstantDoubleInfo
 [tag]: 6
 [value]: 3fb999999999999a
 
-[20]: ConstantUtf8Info
+[22]: ConstantUtf8Info
 [tag]: 1
 [length]: 6
 [bytes]: <init>
 
-[21]: ConstantUtf8Info
+[23]: ConstantUtf8Info
 [tag]: 1
 [length]: 3
 [bytes]: ()V
 
-[22]: ConstantUtf8Info
+[24]: ConstantUtf8Info
 [tag]: 1
 [length]: 4
 [bytes]: Code
 
-[23]: ConstantUtf8Info
+[25]: ConstantUtf8Info
 [tag]: 1
 [length]: 15
 [bytes]: LineNumberTable
 
-[24]: ConstantUtf8Info
+[26]: ConstantUtf8Info
+[tag]: 1
+[length]: 18
+[bytes]: LocalVariableTable
+
+[27]: ConstantUtf8Info
+[tag]: 1
+[length]: 4
+[bytes]: this
+
+[28]: ConstantUtf8Info
+[tag]: 1
+[length]: 22
+[bytes]: Lcom/ming/test/Simple;
+
+[29]: ConstantUtf8Info
 [tag]: 1
 [length]: 3
 [bytes]: add
 
-[25]: ConstantUtf8Info
+[30]: ConstantUtf8Info
 [tag]: 1
 [length]: 5
 [bytes]: (II)I
 
-[26]: ConstantUtf8Info
+[31]: ConstantUtf8Info
+[tag]: 1
+[length]: 1
+[bytes]: a
+
+[32]: ConstantUtf8Info
+[tag]: 1
+[length]: 1
+[bytes]: b
+
+[33]: ConstantUtf8Info
+[tag]: 1
+[length]: 7
+[bytes]: messger
+
+[34]: ConstantUtf8Info
+[tag]: 1
+[length]: 1
+[bytes]: c
+
+[35]: ConstantUtf8Info
+[tag]: 1
+[length]: 1
+[bytes]: d
+
+[36]: ConstantUtf8Info
 [tag]: 1
 [length]: 10
 [bytes]: SourceFile
 
-[27]: ConstantUtf8Info
+[37]: ConstantUtf8Info
 [tag]: 1
 [length]: 11
 [bytes]: Simple.java
 
-[28]: ConstantNameAndTypeInfo
+[38]: ConstantNameAndTypeInfo
 [tag]: 12
-[name_index]: 20-<init>
-[descriptor_index]: 21-()V
+[name_index]: 22-<init>
+[descriptor_index]: 23-()V
 
-[29]: ConstantUtf8Info
+[39]: ConstantClassInfo
+[tag]: 7
+[name_index]: 48-java/lang/System
+
+[40]: ConstantNameAndTypeInfo
+[tag]: 12
+[name_index]: 49-out
+[descriptor_index]: 50-Ljava/io/PrintStream;
+
+[41]: ConstantClassInfo
+[tag]: 7
+[name_index]: 51-java/io/PrintStream
+
+[42]: ConstantNameAndTypeInfo
+[tag]: 12
+[name_index]: 52-println
+[descriptor_index]: 53-(I)V
+
+[43]: ConstantUtf8Info
 [tag]: 1
-[length]: 6
-[bytes]: Simple
+[length]: 20
+[bytes]: com/ming/test/Simple
 
-[30]: ConstantUtf8Info
+[44]: ConstantUtf8Info
 [tag]: 1
 [length]: 16
 [bytes]: java/lang/Object
 
-[31]: ConstantUtf8Info
+[45]: ConstantUtf8Info
 [tag]: 1
-[length]: 6
-[bytes]: Parent
+[length]: 20
+[bytes]: com/ming/test/Parent
 
-[32]: ConstantUtf8Info
+[46]: ConstantUtf8Info
 [tag]: 1
-[length]: 5
-[bytes]: Child
+[length]: 19
+[bytes]: com/ming/test/Child
 
-[33]: ConstantUtf8Info
+[47]: ConstantUtf8Info
 [tag]: 1
 [length]: 10
 [bytes]: HelloWorld
 
+[48]: ConstantUtf8Info
+[tag]: 1
+[length]: 16
+[bytes]: java/lang/System
+
+[49]: ConstantUtf8Info
+[tag]: 1
+[length]: 3
+[bytes]: out
+
+[50]: ConstantUtf8Info
+[tag]: 1
+[length]: 21
+[bytes]: Ljava/io/PrintStream;
+
+[51]: ConstantUtf8Info
+[tag]: 1
+[length]: 19
+[bytes]: java/io/PrintStream
+
+[52]: ConstantUtf8Info
+[tag]: 1
+[length]: 7
+[bytes]: println
+
+[53]: ConstantUtf8Info
+[tag]: 1
+[length]: 4
+[bytes]: (I)V
+
 [access_flags]: 33-public super 
-[this_class]: 2
-[super_class]: 3
+[this_class]: 4
+[super_class]: 5
 [interfaces_count]: 2
 [interfaces]: 
-[0]: 4-Parent
-[1]: 5-Child
+[0]: 6-com/ming/test/Parent
+[1]: 7-com/ming/test/Child
 
 [fields_count]: 4
 [fields]: 
 
 [field 1 ]: 
 [access_flags]: 2-private 
-[name_index]: 6-data
-[descriptor_index]: 7-I
+[name_index]: 8-data
+[descriptor_index]: 9-I
 [attributes_count]: 0
 
 [field 2 ]: 
 [access_flags]: 26-private final static 
-[name_index]: 8-flag
-[descriptor_index]: 9-Ljava/lang/String;
+[name_index]: 10-flag
+[descriptor_index]: 11-Ljava/lang/String;
 [attributes_count]: 1
 
 [1]: AttributeConstantValueInfo
-[attribute_name_index]: 10
+[attribute_name_index]: 12-ConstantValue
 [attribute_length]: 2
-[constantvalue_index]: 11
+[constantvalue_index]: 13-HelloWorld
 
 [field 3 ]: 
 [access_flags]: 26-private final static 
-[name_index]: 12-num
-[descriptor_index]: 13-J
+[name_index]: 14-num
+[descriptor_index]: 15-J
 [attributes_count]: 1
 
 [1]: AttributeConstantValueInfo
-[attribute_name_index]: 10
+[attribute_name_index]: 12-ConstantValue
 [attribute_length]: 2
-[constantvalue_index]: 14
+[constantvalue_index]: 16-null
 
 [field 4 ]: 
 [access_flags]: 26-private final static 
-[name_index]: 16-dou
-[descriptor_index]: 17-D
+[name_index]: 18-dou
+[descriptor_index]: 19-D
 [attributes_count]: 1
 
 [1]: AttributeConstantValueInfo
-[attribute_name_index]: 10
+[attribute_name_index]: 12-ConstantValue
 [attribute_length]: 2
-[constantvalue_index]: 18
+[constantvalue_index]: 20-null
 
 
-[methods_count]: 2
+[methods_count]: 3
 [methods]: 
 
 [method 1 ]: 
 [access_flags]: 1-public 
-[name_index]: 20-<init>
-[descriptor_index]: 21-()V
+[name_index]: 22-<init>
+[descriptor_index]: 23-()V
 [attributes_count]: 1
 
 [1]: AttributeCodeInfo
-[attribute_name_index]: 22
-[attribute_length]: 29
+[attribute_name_index]: 24-Code
+[attribute_length]: 47
 [max_stack]: 1
 [max_locals]: 1
 [code_length]: 5
+[code]: 
+[code]: 
 42-aload_0
 183-invokespecial
 0-nop
 1-aconst_null
 177-return_
 [exception_table_length]: 0
-[attributes_count]: 1
+[attributes_count]: 2
+[attribute_name_index]: 25-LineNumberTable
+[attribute_length]: 6
+[line_number_table_length]: 1
+[row 0]: 
+[start_pc]: 0
+[line_number]: 3
+
+[attribute_name_index]: 26-LocalVariableTable
+[attribute_length]: 12
+[line_variable_table_length]: 1
+[0]: 
+[start_pc]: 0
+[length]: 5
+[name_index]: 27-this
+[descriptor_index]: 28-Lcom/ming/test/Simple;
+[index]: 0
 
 [method 2 ]: 
 [access_flags]: 1-public 
-[name_index]: 24-add
-[descriptor_index]: 25-(II)I
+[name_index]: 29-add
+[descriptor_index]: 30-(II)I
 [attributes_count]: 1
 
 [1]: AttributeCodeInfo
-[attribute_name_index]: 22
-[attribute_length]: 28
+[attribute_name_index]: 24-Code
+[attribute_length]: 66
 [max_stack]: 2
 [max_locals]: 3
 [code_length]: 4
+[code]: 
+[code]: 
 27-iload_1
 28-iload_2
 96-iadd
 172-ireturn
 [exception_table_length]: 0
+[attributes_count]: 2
+[attribute_name_index]: 25-LineNumberTable
+[attribute_length]: 6
+[line_number_table_length]: 1
+[row 0]: 
+[start_pc]: 0
+[line_number]: 9
+
+[attribute_name_index]: 26-LocalVariableTable
+[attribute_length]: 32
+[line_variable_table_length]: 3
+[0]: 
+[start_pc]: 0
+[length]: 4
+[name_index]: 27-this
+[descriptor_index]: 28-Lcom/ming/test/Simple;
+[index]: 0
+[1]: 
+[start_pc]: 0
+[length]: 4
+[name_index]: 31-a
+[descriptor_index]: 9-I
+[index]: 1
+[2]: 
+[start_pc]: 0
+[length]: 4
+[name_index]: 32-b
+[descriptor_index]: 9-I
+[index]: 2
+
+[method 3 ]: 
+[access_flags]: 1-public 
+[name_index]: 33-messger
+[descriptor_index]: 23-()V
 [attributes_count]: 1
+
+[1]: AttributeCodeInfo
+[attribute_name_index]: 24-Code
+[attribute_length]: 88
+[max_stack]: 3
+[max_locals]: 3
+[code_length]: 14
+[code]: 
+[code]: 
+3-iconst_0
+60-istore_1
+5-iconst_2
+61-istore_2
+178-getstatic
+0-nop
+2-iconst_m1
+27-iload_1
+28-iload_2
+96-iadd
+182-invokevirtual
+0-nop
+3-iconst_0
+177-return_
+[exception_table_length]: 0
+[attributes_count]: 2
+[attribute_name_index]: 25-LineNumberTable
+[attribute_length]: 18
+[line_number_table_length]: 4
+[row 0]: 
+[start_pc]: 0
+[line_number]: 13
+[row 1]: 
+[start_pc]: 2
+[line_number]: 14
+[row 2]: 
+[start_pc]: 4
+[line_number]: 15
+[row 3]: 
+[start_pc]: 13
+[line_number]: 16
+
+[attribute_name_index]: 26-LocalVariableTable
+[attribute_length]: 32
+[line_variable_table_length]: 3
+[0]: 
+[start_pc]: 0
+[length]: 14
+[name_index]: 27-this
+[descriptor_index]: 28-Lcom/ming/test/Simple;
+[index]: 0
+[1]: 
+[start_pc]: 2
+[length]: 12
+[name_index]: 34-c
+[descriptor_index]: 9-I
+[index]: 1
+[2]: 
+[start_pc]: 4
+[length]: 10
+[name_index]: 35-d
+[descriptor_index]: 9-I
+[index]: 2
 
 
 [attributes_count]: 1
 [attributes]: 
 
 [0]: AttributeSourceFileInfo
-[attribute_name_index]: 26
+[attribute_name_index]: 36-SourceFile
 [attribute_length]: 2
-[sourcefile_index]: 27
+[sourcefile_index]: 37-Simple.java
+
 
 ```
 

@@ -6,11 +6,8 @@ import com.ming.base.FieldInfo;
 import com.ming.base.MethodInfo;
 import com.ming.base.attribute.*;
 import com.ming.base.constant.*;
-import com.ming.core.ClassFile;
-import com.ming.core.Modifier;
-import com.ming.core.U2;
+import com.ming.core.*;
 import com.ming.main.ClassFileParser;
-import com.ming.util.PrintFormatUtils;
 
 
 public class PrintClassInfo {
@@ -51,7 +48,7 @@ public class PrintClassInfo {
             }
             System.out.println("[" + i + "]: " + ci[i].getClass().getSimpleName());
             // 打印该常量项的信息
-            System.out.println(PrintFormatUtils.printConstant(ci[i], getConstantValueByIndex(i)));
+            System.out.println(printConstant(ci[i], getConstantValueByIndex(i)));
         }
 
         // 获取访问标志
@@ -96,7 +93,7 @@ public class PrintClassInfo {
             for (int j = 0; j < ai.length; j++) {
                 System.out.println("[" + (j + 1) + "]: " + ai[j].getClass().getSimpleName());
                 //System.out.println(ai[j]);
-                System.out.println(PrintFormatUtils.printAttribute(ai[j], getAttributeValue(ai[j])));
+                System.out.println(printAttribute(ai[j]));
             }
         }
 
@@ -122,7 +119,7 @@ public class PrintClassInfo {
             for (int j = 0; j < ai.length; j++) {
                 System.out.println("[" + (j + 1) + "]: " + ai[j].getClass().getSimpleName());
                 //System.out.println(ai[j]);
-                System.out.println(PrintFormatUtils.printAttribute(ai[j], getAttributeValue(ai[j])));
+                System.out.println(printAttribute(ai[j]));
             }
         }
 
@@ -136,7 +133,7 @@ public class PrintClassInfo {
         for (int i = 0; i < ai.length; i++) {
             System.out.println("[" + i + "]: " + ai[i].getClass().getSimpleName());
             //System.out.println(ai[i]);
-            System.out.println(PrintFormatUtils.printAttribute(ai[i], getAttributeValue(ai[i])));
+            System.out.println(printAttribute(ai[i]));
         }
     }
 
@@ -171,9 +168,60 @@ public class PrintClassInfo {
     }
 
 
+    /**
+     * 根据指定的常量值类型，打印相应的数据
+     *
+     * @param ci  常量值
+     * @param str 该常量值的索引指向的常量的值
+     * @return
+     */
+    public static String printConstant(ConstantInfo ci, String str) {
+        String format = null;
+        if (ci instanceof ConstantUtf8Info) {
+            ConstantUtf8Info info = (ConstantUtf8Info) ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[length]: " + info.getLength().getValue() + "\n"
+                    + "[bytes]: " + str + "\n";
+        } else if (ci instanceof ConstantClassInfo) {
+            ConstantClassInfo info = (ConstantClassInfo) ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[name_index]: " + info.getNameIndex().getValue() + "-" + str + "\n";
+        } else if (ci instanceof ConstantNameAndTypeInfo) {
+            ConstantNameAndTypeInfo info = (ConstantNameAndTypeInfo) ci;
+            String[] value = str.split("-");
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[name_index]: " + info.getNameIndex().getValue() + "-" + value[0] + "\n"
+                    + "[descriptor_index]: " + info.getDescriptorIndex().getValue() + "-" + value[1] + "\n";
+        } else if (ci instanceof ConstantStringInfo) {
+            ConstantStringInfo info = (ConstantStringInfo) ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[string_index]: " + info.getStringIndex().getValue() + "-" + str + "\n";
+        } else if (ci instanceof ConstantMethodrefInfo) {
+            ConstantMethodrefInfo info = (ConstantMethodrefInfo) ci;
+            String[] value = str.split("-");
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[class_index]: " + info.getClassIndex().getValue() + "-" + value[0] + "\n"
+                    + "[name_and_type_index]: " + info.getNameAndTypeIndex().getValue() + "-" + value[1] + "-" + value[2] + "\n";
+        } else if (ci instanceof ConstantLongInfo) {
+            ConstantLongInfo info = (ConstantLongInfo) ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[value]: " + info.getHighBytes().toHex() + info.getLowBytes().toHex() + "\n";
+        } else if (ci instanceof ConstantDoubleInfo) {
+            ConstantDoubleInfo info = (ConstantDoubleInfo) ci;
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[value]: " + info.getHighBytes().toHex() + info.getLowBytes().toHex() + "\n";
+        }
+
+        return format;
+    }
 
 
-    public static String  getAttributeValue(AttributeInfo ai) {
+    /**
+     * 根据属性类型来获得属性索引的值
+     * @param ai
+     * @return
+     */
+    private static String  getAttributeValue(AttributeInfo ai) {
         String result = null;
         if (ai instanceof AttributeConstantValueInfo) {
             AttributeConstantValueInfo acvi = (AttributeConstantValueInfo) ai;
@@ -192,20 +240,7 @@ public class PrintClassInfo {
             AttributeLocalVariableTableInfo alvti = (AttributeLocalVariableTableInfo) ai;
             int attribute_name_index = alvti.getAttributeNameIndex().getValue();
             String attributeName = getConstantValueByIndex(attribute_name_index);
-            AttributeLocalVariableTableInfo.LocalVariableTable[] lvt = alvti.getTable();
-            String table = null;
-            for (int i = 0; i < lvt.length; i++) {
-                int descriptor_index = lvt[i].getDescriptorIndex().getValue();
-                String descriptor = getConstantValueByIndex(descriptor_index);
-                int name_index = lvt[i].getNameIndex().getValue();
-                String name = getConstantValueByIndex(name_index);
-                if (i == (lvt.length - 1)) {
-                    table = name + "+" + descriptor;
-                } else {
-                    table = name + "+" + descriptor + ")";
-                }
-            }
-            result = attributeName + "-" + table;
+            result = attributeName;
         } else if (ai instanceof AttributeSourceFileInfo) {
             AttributeSourceFileInfo asfi = (AttributeSourceFileInfo) ai;
             int attribute_name_index = asfi.getAttributeNameIndex().getValue();
@@ -217,15 +252,124 @@ public class PrintClassInfo {
             AttributeCodeInfo aci = (AttributeCodeInfo) ai;
             int attribute_name_index = aci.getAttributeNameIndex().getValue();
             String attributeName = getConstantValueByIndex(attribute_name_index);
-            AttributeInfo[] ai_2 = aci.getAttributes();
-            String othersAttributeResult = null;
-            for (int i = 0; i < ai_2.length; i++) {
-                 othersAttributeResult = getAttributeValue(ai_2[i]);
-            }
-            result = attributeName + "-" + othersAttributeResult;
+            result = attributeName;
         }
 
         return result;
+    }
+
+
+    /**
+     *
+     * @param ai
+     * @return
+     */
+    public static String printAttribute(AttributeInfo ai) {
+        String str = getAttributeValue(ai);
+        String format = null;
+        if (ai instanceof AttributeConstantValueInfo) {
+            AttributeConstantValueInfo info = (AttributeConstantValueInfo) ai;
+            String[] value = str.split("-");
+            format = "[attribute_name_index]: " + info.getAttributeNameIndex().getValue() + "-" + value[0] + "\n"
+                    + "[attribute_length]: " + info.getAttributeLength().getValue() + "\n"
+                    + "[constantvalue_index]: " + info.getConstantValueIndex().getValue() + "-" + value[1] + "\n";
+        }
+
+        if (ai instanceof AttributeSourceFileInfo) {
+            AttributeSourceFileInfo info = (AttributeSourceFileInfo) ai;
+            String[] value = str.split("-");
+            format = "[attribute_name_index]: " + info.getAttributeNameIndex().getValue() + "-" + value[0] + "\n"
+                    + "[attribute_length]: " + info.getAttributeLength().getValue() + "\n"
+                    + "[sourcefile_index]: " + info.getSourcefileIndex().getValue() + "-" + value[1] + "\n";
+        }
+
+        if (ai instanceof AttributeLineNumberTableInfo) {
+            AttributeLineNumberTableInfo info = (AttributeLineNumberTableInfo) ai;
+
+            StringBuffer sb = new StringBuffer();
+            AttributeLineNumberTableInfo.LineNumberTable[] row =  info.getRow();
+            for(int i = 0; i < info.getRow().length; i ++) {
+                sb.append("[row " + i + "]: " + "\n");
+                sb.append("[start_pc]: " + row[i].getStartPc().getValue() + "\n");
+                sb.append("[line_number]: " + row[i].getLineNumber().getValue() + "\n");
+            }
+
+            format = "[attribute_name_index]: " + info.getAttributeNameIndex().getValue() + "-" + str + "\n"
+                    + "[attribute_length]: " + info.getAttributeLength().getValue() + "\n"
+                    + "[line_number_table_length]: " + info.getLineNumberTableLength().getValue() + "\n"
+                    + sb.toString() + "\n";
+        }
+
+        if (ai instanceof AttributeLocalVariableTableInfo) {
+            AttributeLocalVariableTableInfo info = (AttributeLocalVariableTableInfo) ai;
+            StringBuffer sb = new StringBuffer();
+
+            AttributeLocalVariableTableInfo.LocalVariableTable [] localVariableTable = info.getTable();
+            for (int i = 0; i < localVariableTable.length; i++) {
+                sb.append("[" + i + "]: " + "\n");
+                sb.append("[start_pc]: " + localVariableTable[i].getStartPc().getValue() + "\n");
+                sb.append("[length]: " + localVariableTable[i].getLength().getValue() + "\n");
+                int name_index = localVariableTable[i].getNameIndex().getValue();
+                String name = getConstantValueByIndex(name_index);
+                sb.append("[name_index]: " + name_index + "-" + name + "\n");
+                int descriptor_index = localVariableTable[i].getDescriptorIndex().getValue();
+                String descriptor = getConstantValueByIndex(descriptor_index);
+                sb.append("[descriptor_index]: " + descriptor_index + "-" + descriptor + "\n");
+                sb.append("[index]: " + localVariableTable[i].getIndex().getValue() + "\n");
+            }
+
+            format = "[attribute_name_index]: " + info.getAttributeNameIndex().getValue() + "-" + str + "\n"
+                    + "[attribute_length]: " + info.getAttributeLength().getValue() + "\n"
+                    + "[line_variable_table_length]: " + info.getLineVariableTableLength().getValue() + "\n"
+                    + sb.toString();
+        }
+
+        if (ai instanceof AttributeCodeInfo) {
+            AttributeCodeInfo info = (AttributeCodeInfo) ai;
+
+            U1[] code = info.getCode();
+
+            StringBuffer sb_code = new StringBuffer();
+            sb_code.append("[code]: " + "\n");
+            for(int i = 0; i < code.length; i ++) {
+                String opCode = Opcode.getOpcode(code[i].getValue());
+                sb_code.append(code[i].getValue() + "-" + opCode + "\n");
+            }
+            String etl = "[exception_table_length]: " + info.getExceptionTableLength().getValue() + "\n";
+
+            AttributeCodeInfo.ExceptionTable[] exceptionTable = info.getExceptionTable();
+
+            StringBuffer sb_exception_table = new StringBuffer();
+            for(int i = 0; i < exceptionTable.length; i ++) {
+                sb_exception_table.append("[" + i + "]");
+                sb_exception_table.append("[start_pc]: " + exceptionTable[i].getStartPc().getValue() + "\n");
+                sb_exception_table.append("[end_pc]: " + exceptionTable[i].getEndPc().getValue() + "\n");
+                sb_exception_table.append("[handler_pc]: " + exceptionTable[i].getHandlerPc().getValue() + "\n");
+                sb_exception_table.append("[catch_type]: " + exceptionTable[i].getCatchType().getValue() + "\n");
+
+            }
+
+            String ac  = "[attributes_count]: " + info.getAttributesCount().getValue() + "\n";
+
+            AttributeInfo[] attributeChild = info.getAttributes();
+            StringBuffer sb_attribute = new StringBuffer();
+            for (int i = 0; i < attributeChild.length; i++) {
+                 sb_attribute.append(printAttribute(attributeChild[i]));
+            }
+            format = "[attribute_name_index]: " + info.getAttributeNameIndex().getValue() + "-" + str + "\n"
+                    + "[attribute_length]: " + info.getAttributeLength().getValue() + "\n"
+                    + "[max_stack]: " + info.getMaxStack().getValue() + "\n"
+                    + "[max_locals]: " + info.getMaxLocals().getValue() + "\n"
+                    + "[code_length]: " + info.getCodeLength().getValue() + "\n"
+                    + "[code]: " + "\n"
+                    + sb_code.toString()
+                    + etl
+                    + sb_exception_table.toString()
+                    + ac
+                    + sb_attribute.toString();
+        }
+
+        return format;
     }
 
 }
