@@ -28,10 +28,4 @@ public class AttributeSourceFileInfo extends AttributeInfo{
 		return sourcefile_index;
 	}
 
-	@Override
-	public String toString() {
-		return "[attribute_name_index]: " + attribute_name_index.getValue() + "\n"
-			  + "[attribute_length]: " + attribute_length.getValue() + "\n"
-			  + "[sourcefile_index]: " + sourcefile_index.getValue() + "\n";
-	}
 }

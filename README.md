@@ -26,13 +26,16 @@ Class文件解析器
 + 遇到没有实装类型的错误类型有两种
   - 没有找到指定的属性类型："can't find specific attribute"
   - 没有找到指定的常量类型："can't find specific type tag: \[该常量类型所对应的具体的数值]"
++ 方法中的操作符在某些情况下进行补位，所以，在某些情况下存在问题。
   
 ## 使用方法
 
 ### 环境
 支持JDK8及其以上版本
 
-### 测试用例(因为还没有完全完成这个解析器，所以如果想要运行请尽量使用该示例)
+### 测试用例
+
+演示的输出结果，使用的是该示例字节码，如果使用其他的类只需传入类的class文件的路径，即可。如果出现报错，提交一个issue即可。
 
 Simple.java
 
@@ -631,7 +634,12 @@ attributes[attributes_count] | × | 90%
       - print
         + PrintClassInfo.java
       - test
+        + Child.java
+        + Parent.java
+        + Simple.java
         + Test.java
+      - util
+        + PrintFormatUtils  
 + docs
   - classfile
     + ClassFile.md

@@ -31,10 +31,4 @@ public class AttributeConstantValueInfo extends AttributeInfo{
 		return constantvalue_index;
 	}
 
-	@Override
-	public String toString() {
-		return "[attribute_name_index]: " + attribute_name_index.getValue() + "\n"
-			  + "[attribute_length]: " + attribute_length.getValue() + "\n"
-			  + "[constantvalue_index]: " + constantvalue_index.getValue() + "\n";
-	}
 }

@@ -149,30 +149,4 @@ public class AttributeCodeInfo extends AttributeInfo {
 		return attributes;
 	}
 
-	@Override
-	public String toString() {
-		String parent_info = "[attribute_name_index]: " + attribute_name_index.getValue() + "\n"
-				+ "[attribute_length]: " + attribute_length.getValue() + "\n"
-				+ "[max_stack]: " + max_stack.getValue() + "\n"
-				+ "[max_locals]: " + max_locals.getValue() + "\n"
-				+ "[code_length]: " + code_length.getValue() + "\n";
-		StringBuffer sb_code = new StringBuffer();
-		for(int i = 0; i < code.length; i ++) {
-			String opCode = Opcode.getOpcode(code[i].getValue());
-			sb_code.append(code[i].getValue() + "-" + opCode + "\n");
-		}
-		String etl = "[exception_table_length]: " + exception_table_length.getValue() + "\n";
-		StringBuffer sb_exception_table = new StringBuffer();
-		for(int i = 0; i < exception_table.length; i ++) {
-			sb_exception_table.append("[" + i + "]");
-			sb_exception_table.append("[start_pc]: " + exception_table[i].getStartPc().getValue() + "\n");
-			sb_exception_table.append("[end_pc]: " + exception_table[i].getEndPc().getValue() + "\n");
-			sb_exception_table.append("[handler_pc]: " + exception_table[i].getHandlerPc().getValue() + "\n");
-			sb_exception_table.append("[catch_type]: " + exception_table[i].getCatchType().getValue() + "\n");
-
-		}
-		String ac  = "[attributes_count]: " + attributes_count.getValue() + "\n";
-		return parent_info + sb_code.toString() + etl + sb_exception_table.toString() + ac;
-	}
-
 }

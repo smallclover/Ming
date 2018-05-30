@@ -94,22 +94,4 @@ public class AttributeLocalVariableTableInfo extends AttributeInfo{
 		}
 
 	}
-
-	@Override
-	public String toString() {
-		String parent_info = "[attribute_name_index]: " + attribute_name_index.getValue() + "\n"
-				+ "[attribute_length]: " + attribute_length.getValue() + "\n"
-				+ "[line_variable_table_length]: " + line_variable_table_length.getValue() + "\n";
-		StringBuffer sb = new StringBuffer();
-		for(int i = 0; i < table.length; i ++) {
-			sb.append("[start_pc]: " + table[i].getStartPc().getValue() + "\n");
-			sb.append("[length]: " + table[i].getLength().getValue() + "\n");
-			sb.append("[name_index]: " + table[i].getNameIndex().getValue() + "\n");
-			sb.append("[descriptor_index]: " + table[i].getDescriptorIndex().getValue() + "\n");
-			sb.append("[index]: " + table[i].getIndex().getValue() + "\n");
-		}
-
-		return parent_info + sb.toString();
-	}
-
 }

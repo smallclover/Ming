@@ -33,9 +33,5 @@ public class AttributeStackMapTable extends AttributeInfo{
 			frame = cfr.readU1();
 		}
 	}
-
-	@Override
-	public String toString() {
-		return "[attribute_name_index]: " + attribute_name_index.getValue() + "\n";
-	}
+	
 }

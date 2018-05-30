@@ -75,18 +75,4 @@ public class AttributeLineNumberTableInfo extends AttributeInfo {
 
 	}
 
-
-	@Override
-	public String toString() {
-		String parent_info = "[attribute_name_index]: " + attribute_name_index.getValue() + "\n"
-				+ "[attribute_length]: " + attribute_length.getValue() + "\n"
-				+ "[line_number_table_length]: " + line_number_table_length.getValue() + "\n";
-		StringBuffer sb = new StringBuffer();
-		for(int i = 0; i < row.length; i ++) {
-			sb.append("[start_pc]: " + row[i].getStartPc().getValue() + "\n");
-			sb.append("[line_number]: " + row[i].getLineNumber().getValue() + "\n");
-		}
-
-		return parent_info + sb.toString();
-	}
 }
