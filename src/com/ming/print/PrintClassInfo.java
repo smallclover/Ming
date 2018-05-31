@@ -14,6 +14,8 @@ public class PrintClassInfo {
 
     private static ClassFile cf;
     private static ConstantInfo[] ci;
+    private static final String SEPARATOR = "\t";
+    private static final String ENTER = "\n";
 
     /**
      * 初始化class文件路径
@@ -28,113 +30,214 @@ public class PrintClassInfo {
     }
 
     /**
-     * 一次性打印出class文件的所有的信息
+     * 获取magic
+     * @return
      */
-    public static void printAll() {
-        // 获取magic
-        System.out.println("[magic]: " + cf.getMagic().toHex());
-        // 获取次版本
-        System.out.println("[minor_version]: " + cf.getMinorVersion().getValue());
-        // 获取主版本
-        System.out.println("[major_version]: " + cf.getMajorVersion().getValue());
-        // 获取常量池数量
-        System.out.println("[constant_pool_count]: " + cf.getConstantPoolCount().getValue());
+    public static String printMagic() {
+        String key = "[magic]";
+        String value = cf.getMagic().toHex();
+        return key + SEPARATOR + value;
+    }
 
-        System.out.println("[constant_pool]: ");
+    /**
+     * 获取次版本
+     * @return
+     */
+    public static String printMinorVersion() {
+        String key = "[minor_version]";
+        int value = cf.getMinorVersion().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    /**
+     * 获取主版本
+     * @return
+     */
+    public static String printMajorVersion() {
+        String key = "[major_version]";
+        int value = cf.getMajorVersion().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    /**
+     * 获取常量池数量
+     * @return
+     */
+    public static String printConstantPoolCount() {
+        String key = "[constant_pool_count]";
+        int value = cf.getConstantPoolCount().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    /**
+     * 获取常量池
+     * @return
+     */
+    public static String printConstantPool() {
+        String key = "[constant_pool]" + ENTER;
+        StringBuffer sb = new StringBuffer();
 
         for (int i = 1; i < ci.length; i++) {
             if (ci[i] == null) {
                 continue;// double 和long的情况会占用两个索引值n和n+1，而n+1是null
             }
-            System.out.println("[" + i + "]: " + ci[i].getClass().getSimpleName());
-            // 打印该常量项的信息
-            System.out.println(printConstant(ci[i], getConstantValueByIndex(i)));
+
+            sb.append("[" + i + "]" + SEPARATOR + ci[i].getClass().getSimpleName() + ENTER);
+            //打印该常量项的信息
+            sb.append(printConstant(ci[i], getConstantValueByIndex(i)));
         }
 
-        // 获取访问标志
-        int accessFlags_class = cf.getAccessFlags().getValue();
-        System.out.println("[access_flags]: " + accessFlags_class + "-" + Modifier.getModifier().getAccessFlag(accessFlags_class));
-        // 获取该类
-        System.out.println("[this_class]: " + cf.getThisClass().getValue());
-        // 获取父类
-        System.out.println("[super_class]: " + cf.getSuperClass().getValue());
-        // 获取接口数量
-        System.out.println("[interfaces_count]: " + cf.getInterfacesCount().getValue());
+        return key + sb.toString();
+    }
 
-        System.out.println("[interfaces]: ");
 
+    public static String printAccessFlags() {
+        String key = "[access_flags]";
+        int index = cf.getAccessFlags().getValue();
+        String value = Modifier.getModifier().getAccessFlag(index);
+        return key + SEPARATOR + index + SEPARATOR + value;
+    }
+
+    public static String printThisClass() {
+        String key = "[this_class]";
+        int value = cf.getThisClass().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    public static String printSuperClass() {
+        String key = "[super_class]";
+        int value = cf.getSuperClass().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    public static String printInterfacesCount() {
+        String key = "[interfaces_count]";
+        int value = cf.getInterfacesCount().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    public static String printInterfaces() {
+        String key = "[interfaces]" + ENTER;
+
+        StringBuffer sb = new StringBuffer();
         // 获取接口
         U2[] interfaces = cf.getInterfaces();
         if (interfaces != null) {
             for (int i = 0; i < interfaces.length; i++) {
-                int nameIndex = interfaces[i].getValue();
-                String name = getConstantValueByIndex(nameIndex);
-                System.out.println("[" + i + "]: " + nameIndex + "-" + name);
+                int index = interfaces[i].getValue();
+                String name = getConstantValueByIndex(index);
+                sb.append("[" + i + "]" + SEPARATOR + index + SEPARATOR + name + ENTER);
             }
         }
 
-        System.out.println();
+        return key + sb.toString();
+    }
 
-        // 获取字段数量
-        System.out.println("[fields_count]: " + cf.getFieldsCount().getValue());
-        // 获取字段详细信息
-        System.out.println("[fields]: \n");
+    public static String printFieldsCount() {
+        String key = "[fields_count]";
+        int value = cf.getFieldsCount().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    public static String printFields() {
+        String key = "[fields]" + ENTER;
+        StringBuffer sb = new StringBuffer();
         FieldInfo[] fi = cf.getFields();
+        if (true) {
+
+        }
         for (int i = 0; i < fi.length; i++) {
-            System.out.println("[field " + (i + 1) + " ]: ");
+            sb.append("[field " + (i + 1) + " ]" +ENTER);
             int accessflags_field = fi[i].getAccessFlags().getValue();
-            System.out.println("[access_flags]: " + accessflags_field + "-" + Modifier.getModifier().getAccessFlag(accessflags_field));
+            sb.append("[access_flags]" + SEPARATOR + accessflags_field + SEPARATOR + Modifier.getModifier().getAccessFlag(accessflags_field) + ENTER);
             int nameIndex = fi[i].getNameIndex().getValue();
-            System.out.println("[name_index]: " + nameIndex + "-" + getConstantValueByIndex(nameIndex));
+            sb.append("[name_index]" + SEPARATOR + nameIndex + SEPARATOR + getConstantValueByIndex(nameIndex) + ENTER);
             int descriptorIndex = fi[i].getDescriptorIndex().getValue();
-            System.out.println("[descriptor_index]: " + descriptorIndex + "-" + getConstantValueByIndex(descriptorIndex));
-            System.out.println("[attributes_count]: " + fi[i].getAttributesCount().getValue() + "\n");
+            sb.append("[descriptor_index]" + SEPARATOR + descriptorIndex + SEPARATOR + getConstantValueByIndex(descriptorIndex) + ENTER);
+            sb.append("[attributes_count]" + SEPARATOR + fi[i].getAttributesCount().getValue() + ENTER);
+            sb.append("[attributes]" + ENTER);
             AttributeInfo[] ai = fi[i].getAttributes();
             for (int j = 0; j < ai.length; j++) {
-                System.out.println("[" + (j + 1) + "]: " + ai[j].getClass().getSimpleName());
-                //System.out.println(ai[j]);
-                System.out.println(printAttribute(ai[j]));
+                sb.append("[" + (j + 1) + "]" + SEPARATOR + ai[j].getClass().getSimpleName() + ENTER);
+                sb.append(printAttribute(ai[j]));
             }
         }
 
-        System.out.println();
+        return key + sb.toString();
+    }
 
-        // 获取方法数量
-        System.out.println("[methods_count]: " + cf.getMethodsCount().getValue());
-        // 获取方法的具体信息
-        System.out.println("[methods]: \n");
+    public static String printMethodsCount() {
+        String key = "[methods_count]";
+        int value = cf.getMethodsCount().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    public static String printMethods() {
+        String key = "[methods]" + ENTER;
+        StringBuffer sb = new StringBuffer();
         MethodInfo[] mi = cf.getMethods();
         for (int i = 0; i < mi.length; i++) {
-            System.out.println("[method " + (i + 1) + " ]: ");
+            sb.append("[method " + (i + 1) + " ]" +ENTER);
             int accessflags_method = mi[i].getAccessFlags().getValue();
-            System.out.println("[access_flags]: " + accessflags_method + "-" + Modifier.getModifier().getAccessFlag(accessflags_method));
+            sb.append("[access_flags]" + SEPARATOR + accessflags_method + SEPARATOR + Modifier.getModifier().getAccessFlag(accessflags_method) + ENTER);
             int nameIndex = mi[i].getNameIndex().getValue();
-            System.out.println("[name_index]: " + nameIndex + "-" + getConstantValueByIndex(nameIndex));
+            sb.append("[name_index]" + SEPARATOR + nameIndex + SEPARATOR + getConstantValueByIndex(nameIndex) + ENTER);
             int descriptorIndex = mi[i].getDescriptorIndex().getValue();
-            System.out.println("[descriptor_index]: " + descriptorIndex + "-" + getConstantValueByIndex(descriptorIndex));
-            System.out.println("[attributes_count]: " + mi[i].getAttributesCount().getValue() + "\n");
-
+            sb.append("[descriptor_index]" + SEPARATOR + descriptorIndex + SEPARATOR + getConstantValueByIndex(descriptorIndex) + ENTER);
+            sb.append("[attributes_count]" + SEPARATOR + mi[i].getAttributesCount().getValue() + ENTER);
+            sb.append("[attributes]" + ENTER);
             // todo 类似code属性之下还有其他的属性，也需要列举出来
             AttributeInfo[] ai = mi[i].getAttributes();
             for (int j = 0; j < ai.length; j++) {
-                System.out.println("[" + (j + 1) + "]: " + ai[j].getClass().getSimpleName());
-                //System.out.println(ai[j]);
-                System.out.println(printAttribute(ai[j]));
+                sb.append("[" + (j + 1) + "]" + SEPARATOR + ai[j].getClass().getSimpleName() + ENTER);
+                sb.append(printAttribute(ai[j]));
             }
         }
 
-        System.out.println();
+        return key + sb.toString();
+    }
 
-        // 获取属性数量
-        System.out.println("[attributes_count]: " + cf.getAttributesCount().getValue());
-        System.out.println("[attributes]: \n");
+    public static String printAttributesCount() {
+        String key = "[attributes_count]";
+        int value = cf.getAttributesCount().getValue();
+        return key + SEPARATOR + value;
+    }
+
+    public static String printAttributes() {
+        String key = "[attributes]" + ENTER;
+
+        StringBuffer sb = new StringBuffer();
         // 获取属性的具体信息
         AttributeInfo[] ai = cf.getAttributes();
         for (int i = 0; i < ai.length; i++) {
-            System.out.println("[" + i + "]: " + ai[i].getClass().getSimpleName());
-            //System.out.println(ai[i]);
-            System.out.println(printAttribute(ai[i]));
+            sb.append("[" + i + "]" + SEPARATOR +ai[i].getClass().getSimpleName() + ENTER);
+            sb.append(printAttribute(ai[i]));
         }
+
+        return key + sb.toString();
+    }
+
+    /**
+     * 一次性打印出class文件的所有的信息
+     */
+    public static String  printAll() {
+
+        return printMagic() + ENTER
+                + printMinorVersion() + ENTER
+                + printMajorVersion() + ENTER
+                + printConstantPoolCount() + ENTER
+                + printConstantPool() + ENTER
+                + printAccessFlags() + ENTER
+                + printThisClass() + ENTER
+                + printSuperClass() + ENTER
+                + printInterfacesCount() + ENTER
+                + printInterfaces() + ENTER
+                + printFieldsCount() + ENTER
+                + printFields() + ENTER
+                + printMethodsCount() + ENTER
+                + printMethods() + ENTER
+                + printAttributesCount() + ENTER
+                + printAttributes() + ENTER;
     }
 
     /**
@@ -163,6 +266,13 @@ public class PrintClassInfo {
             String methodDescriptorStr = getConstantValueByIndex(methodDescriptorIndex);
 
             result = methodClassStr + "-" + methodDescriptorStr;
+        } else if (ci[index] instanceof ConstantFieldrefInfo) {
+            int fieldClassIndex = ((ConstantFieldrefInfo)ci[index]).getClassIndex().getValue();
+            String fieldClass = getConstantValueByIndex(fieldClassIndex);
+            int nameAndTypeIndex = ((ConstantFieldrefInfo)ci[index]).getNameAndTypeIndex().getValue();
+            String nameAndType = getConstantValueByIndex(nameAndTypeIndex);
+
+            result = fieldClass + "-" + nameAndType;
         }
         return result;
     }
@@ -175,7 +285,7 @@ public class PrintClassInfo {
      * @param str 该常量值的索引指向的常量的值
      * @return
      */
-    public static String printConstant(ConstantInfo ci, String str) {
+    private static String printConstant(ConstantInfo ci, String str) {
         String format = null;
         if (ci instanceof ConstantUtf8Info) {
             ConstantUtf8Info info = (ConstantUtf8Info) ci;
@@ -198,6 +308,12 @@ public class PrintClassInfo {
                     + "[string_index]: " + info.getStringIndex().getValue() + "-" + str + "\n";
         } else if (ci instanceof ConstantMethodrefInfo) {
             ConstantMethodrefInfo info = (ConstantMethodrefInfo) ci;
+            String[] value = str.split("-");
+            format = "[tag]: " + info.getTag().getValue() + "\n"
+                    + "[class_index]: " + info.getClassIndex().getValue() + "-" + value[0] + "\n"
+                    + "[name_and_type_index]: " + info.getNameAndTypeIndex().getValue() + "-" + value[1] + "-" + value[2] + "\n";
+        } else if (ci instanceof ConstantFieldrefInfo) {
+            ConstantFieldrefInfo info = (ConstantFieldrefInfo) ci;
             String[] value = str.split("-");
             format = "[tag]: " + info.getTag().getValue() + "\n"
                     + "[class_index]: " + info.getClassIndex().getValue() + "-" + value[0] + "\n"
@@ -260,11 +376,11 @@ public class PrintClassInfo {
 
 
     /**
-     *
+     * 打印属性的信息
      * @param ai
      * @return
      */
-    public static String printAttribute(AttributeInfo ai) {
+    private static String printAttribute(AttributeInfo ai) {
         String str = getAttributeValue(ai);
         String format = null;
         if (ai instanceof AttributeConstantValueInfo) {

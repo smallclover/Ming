@@ -7,6 +7,6 @@ public class Test {
         //class文件的绝对路径
         String path = "C:\\Users\\smallclover\\Desktop\\Simple.class";
         PrintClassInfo.init(path);
-        PrintClassInfo.printAll();
+        System.out.println(PrintClassInfo.printAll());
     }
 }

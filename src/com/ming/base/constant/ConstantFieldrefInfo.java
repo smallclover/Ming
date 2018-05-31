@@ -15,4 +15,16 @@ public class ConstantFieldrefInfo extends ConstantInfo {
         name_and_type_index = cfr.readU2();
     }
 
+
+    public U1 getTag() {
+        return tag;
+    }
+
+    public U2 getClassIndex() {
+        return class_index;
+    }
+
+    public U2 getNameAndTypeIndex() {
+        return name_and_type_index;
+    }
 }
